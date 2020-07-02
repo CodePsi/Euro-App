@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Euro Application - Graduates</title>
+    <script src="/euro_new/js/HttpRequest.js"></script>
+    <link href="/euro_new/css/style.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<script type="text/x-template" id="grid-template">
+    <div class="grid-container">
+        <div class="scrollable-table" @scroll="tableHeaderFixed($event)">
+
+<!--            @scroll="test($event)"-->
+        <table   id="table"
+                 data-toggle="table"
+                 data-height="460">
+            <thead ref="header">
+            <tr>
+                <th v-for="key in columns"
+                    @click="sortBy(key)"
+                    :class="{ active: sortKey == key }">
+                    {{ key | capitalize }}
+                    <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+                    </span>
+                </th>
+                <th style="min-width: 20px"></th>
+                <th style="min-width: 20px"></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr v-for="entry in filteredHeroes" :ref="'graduate' + entry['id']">
+                <td contenteditable="true" v-for="key in columns">
+<!--                    <div v-if="key === 'прізвище'" style="position: absolute">{{entry[key]}}</div>-->
+                    <div>{{entry[key]}}</div>
+                </td>
+                <td style="min-width: 20px">
+                    <!--                    <button :value="entry['id']" @click="displayEditRequestModalWindow(entry['id'])">E</button>-->
+                    <input :value="entry['id']" @click="test(entry['id'])" type="image" src="https://img2.freepng.ru/20180420/bqq/kisspng-computer-icons-writing-fonts-vector-5ada38828ce8b3.0081536415242507545772.jpg" style="max-width: 20px">
+                </td>
+                <td style="min-width: 20px">
+                    <input :value="entry['id']" @click="displayDeleteEmployeeModalWindow(entry['id'])" type="image" src="/icc/views/images/deleteIcon.png" style="max-width: 20px">
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+        </div>
+
+        <button @click="updateAllEntries()">Save</button>
+
+    </div>
+</script>
+    <div id="app">
+        <div class="main-container">
+            <div class="content-container">
+                <form id="search" class="search-field">
+                    <span class="text-caption">Search </span><input class="input-box" name="query" v-model="searchQuery" autocomplete="off">
+                </form>
+                <grid
+                        :heroes="gridData"
+                        :columns="gridColumns"
+                        :filter-key="searchQuery">
+                </grid>
+            </div>
+        </div>
+    </div>
+    <script src="/euro_new/js/graduateList.js"></script>
+</body>
+</html>

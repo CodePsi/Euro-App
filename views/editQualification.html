@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Euro Application - Edit Qualification</title>
+    <script src="/euro_new/js/HttpRequest.js"></script>
+    <link href="/euro_new/css/style.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="main-container">
+            <div class="content-container">
+                <label class="label-box">Назва групи(Скорочено): <textarea v-model="abbreviation" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+                <label class="label-box">Ступінь освіти: <select v-model="degree" class="select-css">
+                    <option selected>Бакалавр</option>
+                    <option>Магістр</option>
+                </select></label>
+                <label class="label-box">Кваліфікація: <textarea v-model="qualificationUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+                <label class="label-box">Qualification: <textarea v-model="qualificationEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+                <label class="label-box">Галузь знань: <textarea v-model="fieldOfStudyUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+                <label class="label-box">Field of study: <textarea v-model="fieldOfStudyEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+                <label class="label-box">Перша спеціальність: <textarea v-model="firstSpecialtyUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+                <label class="label-box">First Specialty: <textarea v-model="firstSpecialtyEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+                <label class="label-box">Освітня програма: <textarea v-model="educationProgramUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+                <label class="label-box">Educational program: <textarea v-model="educationProgramUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+                <label class="label-box">Друга спеціальність: <textarea v-model="secondSpecialtyUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+                <label class="label-box">Second Specialty: <textarea v-model="secondSpecialtyEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+                <label class="label-box">Спеціалізація: <textarea v-model="specializationUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+                <label class="label-box">Specialization: <textarea v-model="specializationEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+                <div class="submit-button-container">
+                    <button @click="updateQualification" type="submit" class="submit-button">Зберегти</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/euro_new/js/editQualification.js"></script>
+
+</body>
+</html>

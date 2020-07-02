@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Euro Application - Login Panel</title>
+    <script src="/euro_new/js/HttpRequest.js"></script>
+    <link href="/euro_new/css/style.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    <div id="app">
+        <label>
+            <input v-model="login">
+        </label>
+        <label>
+            <input v-model="password">
+        </label>
+        <button @click="logIn()">Login</button>
+    </div>
+    <script src="/euro_new/js/loginPage.js"></script>
+
+</body>
+</html>
