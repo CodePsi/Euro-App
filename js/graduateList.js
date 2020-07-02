@@ -94,7 +94,9 @@ var componentGrid = Vue.component('grid', {
         tableHeaderFixed: function (ev) {
             var el = ev.target;
             var refs = this.$refs;
-
+            var i = Math.ceil(el.scrollTop / 100);
+            var li = 0;
+            var h = 0;
             // console.log(ev);
             if (el.scrollTop > 0) {
                 this.$refs.header.style.transform = 'translateY(' + el.scrollTop + 'px)'
@@ -104,17 +106,30 @@ var componentGrid = Vue.component('grid', {
             if (el.scrollLeft > 0) {
                 Object.keys(this.$refs).forEach(function (value) {
                     if (value.startsWith("graduate")) {
-                        // console.log(refs);
-                        refs[value][0].children[0].style.transform = 'translateX(' + el.scrollLeft + 'px)';
-                        // refs["header"][0].style['z-index'] = "1";
-                        // refs[value][0].children[0].style.position = "relative";
-                        // refs[value][0].children[0].style.position = "-";
-                    }
+                        // if (li > i) {
+                            // console.log(refs);
+                        // console.log(h);
+                        // console.log(el.scrollTop);
+                            if (el.scrollTop <= h) {
+                                refs[value][0].children[0].style.transform = 'translateX(' + el.scrollLeft + 'px)';
+                                refs[value][0].children[0].style['background-color'] = '#c7c7bd';
+                                // console.log(refs[value]);
+                            } else {
+                                refs[value][0].children[0].style.transform = '';
+                                // refs[value][0].children[0].style['background-color'] = '#f9f9f9';
+                                h += refs[value][0].scrollHeight;
+                            }
+                            // refs["header"][0].style['z-index'] = "1";
+                            // refs[value][0].children[0].style.position = "relative";
+                            // refs[value][0].children[0].style.position = "-";
+                        }
+                    // } else li++;
                 });
             } else {
                 Object.keys(this.$refs).forEach(function (value) {
                     if (value.startsWith("graduate")) {
-                        refs[value][0].children[0].style.transform = ''
+                        refs[value][0].children[0].style.transform = '';
+                        refs[value][0].children[0].style['background-color'] = '#f9f9f9';
                     }
                 });
             }
