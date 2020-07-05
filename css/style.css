@@ -1,10 +1,11 @@
 
 body {
-    font-family: Helvetica Neue, Arial, sans-serif;
+    /*font-family: Helvetica Neue, Arial, sans-serif;*/
     font-size: 14px;
     color: #444;
     margin: 0;
     background-color: #54799c;
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 table {
@@ -102,6 +103,7 @@ th.active .arrow {
     width: 80%;
     height: auto;
     border-radius: 1px;
+    padding-bottom: 50px;
 }
 
 input.input-box {
@@ -322,57 +324,254 @@ th {
     display: flex;
     flex-flow: column wrap;
     margin: 50px 0 50px 0;
+    align-items: center;
 }
 
 table {
-    position: relative;
+    /*position: relative;*/
     width: 700px;
-    background-color: #aaa;
+    /*background-color: #aaa;*/
     overflow: hidden;
-    border-collapse: collapse;
+    border-collapse:  separate;
 }
 
 
-/*thead*/
-/*thead {*/
-/*    position: relative;*/
-/*    display: block; !*seperates the header from the body allowing it to be positioned*!*/
-/*    !*width: 700px;*!*/
-/*    overflow: visible;*/
-/*}*/
+.modal-mask {
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    display: table;
+    transition: opacity .3s ease;
+}
 
-/*thead th {*/
-/*    background-color: #99a;*/
-/*    min-width: 120px;*/
-/*    height: 32px;*/
-/*    border: 1px solid #222;*/
-/*}*/
+.modal-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+}
 
-/*thead th:nth-child(1) {!*first cell in the header*!*/
-/*    position: relative;*/
-/*    display: block; !*seperates the first cell in the header from the header*!*/
-/*    background-color: #88b;*/
-/*}*/
+.modal-container {
+    width: 300px;
+    margin: 0px auto;
+    padding: 40px 30px;
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+    transition: all .3s ease;
+    font-family: Helvetica, Arial, sans-serif;
+}
 
+.modal-header h3 {
+    margin-top: 0;
+    color: #42b983;
+    text-align: center;
+}
 
-/*tbody*/
-/*tbody {*/
-/*    position: relative;*/
-/*    display: block; !*seperates the tbody from the header*!*/
-/*    !*width: 700px;*!*/
-/*    !*height: 239px;*!*/
-/*    overflow: scroll;*/
-/*}*/
+.modal-body {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
 
-/*tbody td {*/
-/*    !*background-color: #bbc;*!*/
-/*    min-width: 120px;*/
-/*    !*border: 1px solid #222;*!*/
-/*}*/
+.modal-footer {
+    display: flex;
+    flex-flow: row-reverse wrap;
+}
 
-/*td:nth-child(1) {  !*the first cell in each tr*!*/
-/*    position: absolute;*/
-/*    !*display: block; !*seperates the first column from the tbody*!*!*/
-/*    height: 200px;*/
-/*    !*background-color: #99a;*!*/
-/*}*/
+.modal-default-button {
+    background: gainsboro;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: .9em;
+    margin: .3em;
+    color: indigo;
+    text-decoration: none;
+    flex-grow: 1;
+    text-align: center;
+    border-style: none;
+    border-width: 0px;
+    transition: all 1s ease-in-out 0s;
+    max-width: 160px;
+}
+
+.modal-default-button:hover {
+    transition: all 1s ease-in-out 0s;
+    opacity: 0.7;
+    background-color: gray;
+    color: white;
+}
+
+.save-button {
+    padding: 10px 30px 10px 30px;
+    background-color: #0D8BBD;
+    color: lightyellow;
+    text-align: center;
+    font-family: "Gill Sans", sans-serif;
+    font-size: 15px;
+    width: 500px;
+    border: 2px solid #2c97bd;
+    border-radius: 2px;
+    transition: all 1s ease-in-out 0s;
+}
+
+.save-button:hover {
+    transition: all 1s ease-in-out 0s;
+    background-color: #4a67bd;
+    border: 2px solid #9e9cbd;
+    transform: scale(1.08);
+}
+
+.search-field {
+    /*margin-left: 200px;*/
+    margin: 15px 0 25px 0;
+}
+
+.top {
+    margin: 0 auto;
+    display: table;
+}
+
+.bottom {
+    position: absolute;
+    top: 40%;
+    left: 45%;
+}
+
+.right {
+    position: absolute;
+    right: 20px;
+}
+
+.left {
+    position: absolute;
+}
+
+.right, .left {
+    top: 25%;
+}
+
+.tooltip {
+    display: block !important;
+    z-index: 10000;
+    max-width: 200px;
+}
+
+.tooltip .tooltip-inner {
+    background: black;
+    color: white;
+    border-radius: 16px;
+    padding: 5px 10px 4px;
+}
+
+.tooltip .tooltip-arrow {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    position: absolute;
+    margin: 5px;
+    border-color: black;
+}
+
+.tooltip[x-placement^="top"] {
+    margin-bottom: 5px;
+}
+
+.tooltip[x-placement^="top"] .tooltip-arrow {
+    border-width: 5px 5px 0 5px;
+    border-left-color: transparent !important;
+    border-right-color: transparent !important;
+    border-bottom-color: transparent !important;
+    bottom: -5px;
+    left: calc(50% - 5px);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.tooltip[x-placement^="bottom"] {
+    margin-top: 5px;
+}
+
+.tooltip[x-placement^="bottom"] .tooltip-arrow {
+    border-width: 0 5px 5px 5px;
+    border-left-color: transparent !important;
+    border-right-color: transparent !important;
+    border-top-color: transparent !important;
+    top: -5px;
+    left: calc(50% - 5px);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.tooltip[x-placement^="right"] {
+    margin-left: 5px;
+}
+
+.tooltip[x-placement^="right"] .tooltip-arrow {
+    border-width: 5px 5px 5px 0;
+    border-left-color: transparent !important;
+    border-top-color: transparent !important;
+    border-bottom-color: transparent !important;
+    left: -5px;
+    top: calc(50% - 5px);
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.tooltip[x-placement^="left"] {
+    margin-right: 5px;
+}
+
+.tooltip[x-placement^="left"] .tooltip-arrow {
+    border-width: 5px 0 5px 5px;
+    border-top-color: transparent !important;
+    border-right-color: transparent !important;
+    border-bottom-color: transparent !important;
+    right: -5px;
+    top: calc(50% - 5px);
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.tooltip[aria-hidden='true'] {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .15s, visibility .15s;
+}
+
+.tooltip[aria-hidden='false'] {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .15s;
+}
+
+.add-button-container {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: flex-end;
+    width: 100%;
+    padding-right: 100px;
+}
+
+.add-button {
+    padding: 10px 15px 10px 15px;
+    background-color: #4a67bd;
+    color: #f8fff4;
+    text-align: center;
+    font-family: "Gill Sans", sans-serif;
+    font-size: 15px;
+    min-width: 355px;
+    border: 2px solid #bdb9bc;
+    border-radius: 2px;
+    transition: all 1s ease-in-out 0s;
+}
+
+.add-button:hover {
+    transition: all 1s ease-in-out 0s;
+    background-color: #4a67bd;
+    border: 2px solid #9e9cbd;
+    color: white;
+    /*transform: scale(1.08);*/
+}
