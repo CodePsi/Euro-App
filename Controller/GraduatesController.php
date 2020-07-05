@@ -29,4 +29,24 @@ class GraduatesController
         } catch (IncorrectObjectTypeException $e) {
         }
     }
+
+    public static function createNewGraduate($qualificationId)
+    {
+        try {
+            $dao = new GraduatesDao();
+            $entry = new Graduates(-1, $qualificationId, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+            echo $dao->save($entry);
+        } catch (IncorrectObjectTypeException $e) {
+            echo $e;
+        }
+    }
+
+    public static function deleteGraduate($id)
+    {
+        try {
+            $dao = new GraduatesDao();
+            $dao->delete($id);
+        } catch (NotFoundItemException $e) {
+        }
+    }
 }
