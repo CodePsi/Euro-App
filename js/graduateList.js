@@ -1,3 +1,14 @@
+Vue.component('modal', {
+    template: '#modal-template',
+    props: {
+        width: String
+    },
+    methods: {
+        getActiveID: function() {
+            return app.activeModalValue
+        }
+    }
+});
 var componentGrid = Vue.component('grid', {
     template: '#grid-template',
     props: {
@@ -48,49 +59,6 @@ var componentGrid = Vue.component('grid', {
             this.sortKey = key;
             this.sortOrders[key] = this.sortOrders[key] * -1;
         },
-        updateAllEntries: function () {
-            var refs = this.$refs;
-            Object.keys(this.$refs).forEach(function (value) {
-                if (value.startsWith("graduate")) {
-                    var request = new HttpRequest();
-                    var id = value.replace(/graduate/, '');
-                    console.log(value);
-                    var children = refs[value][0].children;
-                    var json = JSON.stringify({
-                        'id': id,
-                        // 'qualificationId': value,
-                        'lastNameUA': children[0].innerText,
-                        'lastNameEN': children[1].innerText,
-                        'firstNameUA': children[2].innerText,
-                        'firstNameEN': children[3].innerText,
-                        'birthday': children[4].innerText,
-                        'serialDiploma': children[5].innerText,
-                        'numberOfDiploma': children[6].innerText,
-                        'numberAddition': children[7].innerText,
-                        'prevDocumentUA': children[8].innerText,
-                        'prevDocumentEN': children[9].innerText,
-                        'prevSerialNumberAddition': children[10].innerText,
-                        'durationOfTrainingUA': children[11].innerText,
-                        'durationOfTrainingEN': children[12].innerText,
-                        'trainingStart': children[13].innerText,
-                        'trainingEnd': children[14].innerText,
-                        // 'actualNumberOfEstimates': children[15].innerText,
-                        'decisionDate': children[15].innerText,
-                        'protocolNum': children[16].innerText,
-                        'qualificationAwardedUA': children[17].innerText,
-                        'qualificationAwardedEN': children[18].innerText,
-                        'issuedBy': children[19].innerText,
-                        'issuedByEN': children[20].innerText
-                    });
-                    request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
-                        if (request.isRequestSuccessful()) {
-                            console.log(request.xmlHttpRequestInstance.responseText);
-                        }
-                    };
-                    request.sendPUTRequest("/euro_new/graduates", json);
-                }
-            });
-        },
         tableHeaderFixed: function (ev) {
             var el = ev.target;
             var refs = this.$refs;
@@ -98,10 +66,28 @@ var componentGrid = Vue.component('grid', {
             var li = 0;
             var h = 0;
             // console.log(ev);
+            // console.log(this.$refs.header.children[0].children);
             if (el.scrollTop > 0) {
-                this.$refs.header.style.transform = 'translateY(' + el.scrollTop + 'px)'
+                // this.$refs.header.style.transform = 'translateY(' + el.scrollTop + 'px)'
+                // this.$refs.header.style.top = el.scrollTop + 'px';
+                // this.$refs.header.style.position = 'relative'
+                Object.keys(this.$refs.header.children[0].children).forEach(function (value) {
+                    // console.log(refs.header.children[0].children[value]);
+                    // } else {
+                    // this.$refs.header.style.transform = 'translateY(0px)'
+                    refs.header.children[0].children[value].style.top = el.scrollTop + 'px';
+                    refs.header.children[0].children[value].style.position = 'relative';
+                    refs.header.children[0].children[value].style['z-index'] = '1';
+                    // this.$refs.header.style.top = '0px'
+                    // this.$refs.header.style.position = 'relative'
+                });
+                // }
             } else {
-                this.$refs.header.style.transform = 'translateY(0px)'
+                Object.keys(this.$refs.header.children[0].children).forEach(function (value) {
+                    refs.header.children[0].children[value].style.top = '';
+                    refs.header.children[0].children[value].style.position = '';
+                    refs.header.children[0].children[value].style['z-index'] = '';
+                });
             }
             if (el.scrollLeft > 0) {
                 Object.keys(this.$refs).forEach(function (value) {
@@ -110,15 +96,22 @@ var componentGrid = Vue.component('grid', {
                             // console.log(refs);
                         // console.log(h);
                         // console.log(el.scrollTop);
-                            if (el.scrollTop <= h) {
-                                refs[value][0].children[0].style.transform = 'translateX(' + el.scrollLeft + 'px)';
-                                refs[value][0].children[0].style['background-color'] = '#c7c7bd';
+                        //     if (el.scrollTop <= h) {
+                                // refs[value][0].children[0].style.transform = 'translateX(' + el.scrollLeft + 'px)';
+                        if (refs[value][0] !== undefined) {
+                            refs[value][0].children[0].style.left = el.scrollLeft + 'px';
+                            refs[value][0].children[0].style.position = 'relative';
+                            refs[value][0].children[0].style['z-index'] = 'auto';
+                            refs[value][0].children[0].style['background-color'] = '#c7c7bd';
+                        }
                                 // console.log(refs[value]);
-                            } else {
-                                refs[value][0].children[0].style.transform = '';
+                            // } else {
+                                // refs[value][0].children[0].style.transform = '';
+                                // refs[value][0].children[0].style.left = 0;
+
                                 // refs[value][0].children[0].style['background-color'] = '#f9f9f9';
-                                h += refs[value][0].scrollHeight;
-                            }
+                                // h += refs[value][0].scrollHeight;
+                            // }
                             // refs["header"][0].style['z-index'] = "1";
                             // refs[value][0].children[0].style.position = "relative";
                             // refs[value][0].children[0].style.position = "-";
@@ -127,12 +120,21 @@ var componentGrid = Vue.component('grid', {
                 });
             } else {
                 Object.keys(this.$refs).forEach(function (value) {
-                    if (value.startsWith("graduate")) {
-                        refs[value][0].children[0].style.transform = '';
-                        refs[value][0].children[0].style['background-color'] = '#f9f9f9';
+                    if (refs[value][0] !== undefined) {
+                        if (value.startsWith("graduate")) {
+                            refs[value][0].children[0].style.left = '';
+                            refs[value][0].children[0].style.position = '';
+                            refs[value][0].children[0].style['z-index'] = '';
+                            refs[value][0].children[0].style['background-color'] = '#f9f9f9';
+                        }
                     }
                 });
+
             }
+        },
+        displayDeleteGraduateModalWindow: function (id) {
+            app.activeModalValue = id;
+            app.showDeleteEntryModal = true;
         }
     }
 });
@@ -147,10 +149,15 @@ var componentGrid = Vue.component('grid', {
 //         $('tbody td:nth-child(1)').css("left", $("tbody").scrollLeft()); //fix the first column of tdbody
 //     });
 // });
-
+// Vue.use(VTooltip);
+Vue.directive('tooltip', VTooltip.VTooltip)
+Vue.directive('close-popover', VTooltip.VClosePopover)
+Vue.component('v-popover', VTooltip.VPopover)
 var app = new Vue({
     el: '#app',
     data: {
+        activeModalValue: -1,
+        showDeleteEntryModal: false,
         searchQuery: '',
         gridColumns: ['прізвище', 'family name(s)', 'ім\'я та по-батькові', 'given name(s)', 'дата народження', 'серія диплома',
             'номер диплома', 'номер додатка', 'попередній документ про освіту', 'the previous document of education',
@@ -170,15 +177,16 @@ var app = new Vue({
         this.qualificationId = pathname.match(/\d/)[0];
         console.log(this.qualificationId);
         this.updateAllGraduates();
+
     },
     methods: {
         updateAllGraduates: function () {
             var request = new HttpRequest();
             request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
                 if (request.isRequestSuccessful()) {
-                    console.log(request.xmlHttpRequestInstance.responseText);
+                    // console.log(request.xmlHttpRequestInstance.responseText);
                     var graduatesJSON = JSON.parse(request.xmlHttpRequestInstance.responseText);
-                    console.log(graduatesJSON);
+                    // console.log(graduatesJSON);
                     for (var i = 0; i < graduatesJSON.length; i++) {
                         graduatesJSON[i] = {
                             'id': graduatesJSON[i][1],
@@ -209,52 +217,99 @@ var app = new Vue({
                     }
                     app.qualifications = graduatesJSON;
                     console.log(graduatesJSON);
-                    app.gridDataAll = graduatesJSON;
-                    app.setUpPagination();
+                    app.gridData = graduatesJSON;
                     console.log(app.$refs);
                 }
             };
             console.log(JSON.stringify({'qualificationId': this.qualificationId}));
             request.sendGETRequest("/euro_new/graduates?qualificationId=" + this.qualificationId, "");
         },
-        setUpPagination: function () {
-            app.pages = Math.ceil(app.gridDataAll.length / app.countEntriesEachPage);
-            app.setPage(1);
-            app.gridData = app.gridDataAll.slice((app.currentPage - 1) * app.countEntriesEachPage, ((app.currentPage - 1) * app.countEntriesEachPage) + app.countEntriesEachPage);
-        },
-        setPage: function(page) {
-            if (page !== '..') { //Case when we don't need to change page because it is only decoration.
-                if (page !== undefined)
-                    app.currentPage = page;
-                if (app.pages > 4) {
-                    if (app.currentPage === app.pages) {
-                        app.pagesArray = [];
-                        app.pagesArray.push(1, '..', app.currentPage - 1, app.currentPage);
-                    } else if (app.currentPage === 1) {
-                        app.pagesArray = [];
-                        app.pagesArray.push(1, 2, '..', app.pages);
-                    } else if (app.currentPage >= app.pages - 2) {
-                        app.pagesArray = [];
-                        if (app.currentPage === app.pages - 2)
-                            app.pagesArray.push(1, '..', app.currentPage - 1, app.currentPage, app.currentPage + 1, app.pages);
-                        else
-                            app.pagesArray.push(1, '..', app.currentPage - 1, app.currentPage, app.currentPage + 1);
-                    } else {
-                        app.pagesArray = [];
-                        if (app.currentPage > 3)
-                            app.pagesArray.push(1, '..', app.currentPage - 1, app.currentPage, app.currentPage + 1, '..', app.pages);
-                        else if (app.currentPage === 3)
-                            app.pagesArray.push(1, app.currentPage - 1, app.currentPage, app.currentPage + 1, '..', app.pages);
-                        else
-                            app.pagesArray.push(app.currentPage - 1, app.currentPage, app.currentPage + 1, '..', app.pages);
-                    }
-                } else {
-                    app.pagesArray = [];
-                    for (var i = 1; i < app.pages + 1; i++)
-                        app.pagesArray.push(i);
+        addNewGraduate: function () {
+            var request = new HttpRequest();
+            request.xmlHttpRequestInstance.onreadystatechange = function () {
+                if (request.isRequestSuccessful()) {
+                    app.updateAllGraduates();
+                    console.log(request.xmlHttpRequestInstance.responseText);
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Новий запис додано',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                 }
-                app.gridData = app.gridDataAll.slice((app.currentPage - 1) * app.countEntriesEachPage, ((app.currentPage - 1) * app.countEntriesEachPage) + app.countEntriesEachPage);
-            }
+            };
+
+            request.sendPOSTRequest("/euro_new/graduates?qualificationId=" + this.qualificationId, "")
+        },
+        deleteGraduate: function () {
+            var request = new HttpRequest();
+            request.xmlHttpRequestInstance.onreadystatechange = function () {
+                if (request.isRequestSuccessful()) {
+                    app.updateAllGraduates();
+                    app.showDeleteEntryModal = false;
+                    console.log(request.xmlHttpRequestInstance.responseText);
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Запис успішно видалено',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            };
+
+            request.sendDELETERequest("/euro_new/graduates?id=" + this.activeModalValue, "")
+        },
+        updateAllEntries: function () {
+            var refs = this.$children[0].$refs; //Accessing to grid-template's refs via children component in parent component
+            Object.keys(refs).forEach(function (value) {
+                if (value.startsWith("graduate")) {
+                    var request = new HttpRequest();
+                    var id = value.replace(/graduate/, '');
+                    // console.log(value);
+                    var children = refs[value][0].children;
+                    var json = JSON.stringify({
+                        'id': id,
+                        // 'qualificationId': value,
+                        'lastNameUA': children[0].innerText,
+                        'lastNameEN': children[1].innerText,
+                        'firstNameUA': children[2].innerText,
+                        'firstNameEN': children[3].innerText,
+                        'birthday': children[4].innerText,
+                        'serialDiploma': children[5].innerText,
+                        'numberOfDiploma': children[6].innerText,
+                        'numberAddition': children[7].innerText,
+                        'prevDocumentUA': children[8].innerText,
+                        'prevDocumentEN': children[9].innerText,
+                        'prevSerialNumberAddition': children[10].innerText,
+                        'durationOfTrainingUA': children[11].innerText,
+                        'durationOfTrainingEN': children[12].innerText,
+                        'trainingStart': children[13].innerText,
+                        'trainingEnd': children[14].innerText,
+                        // 'actualNumberOfEstimates': children[15].innerText,
+                        'decisionDate': children[15].innerText,
+                        'protocolNum': children[16].innerText,
+                        'qualificationAwardedUA': children[17].innerText,
+                        'qualificationAwardedEN': children[18].innerText,
+                        'issuedBy': children[19].innerText,
+                        'issuedByEN': children[20].innerText
+                    });
+                    request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
+                        if (request.isRequestSuccessful()) {
+                            console.log(request.xmlHttpRequestInstance.responseText);
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Дані було збережено :)',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        }
+                    };
+                    request.sendPUTRequest("/euro_new/graduates", json);
+                }
+            });
         }
     }
 });

@@ -48,9 +48,8 @@ var app = new Vue({
             var request = new HttpRequest();
             request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
                 if (request.isRequestSuccessful()) {
-                    var qualificationJSON = JSON.parse(request.xmlHttpRequestInstance.responseText);
                     // console.log(qualificationJSON.qualificationEN);
-                    app.qualificationData = qualificationJSON;
+                    app.qualificationData = JSON.parse(request.xmlHttpRequestInstance.responseText);
                 }
             };
             request.sendGETRequest("/euro_new/qualifications/" + app.qualificationId, "");
