@@ -204,7 +204,12 @@ class Discipline
         $this->teacherId = $teacherId;
     }
 
-
+    public function toJson(): string
+    {
+        return json_encode(array('id' => intval($this -> getId()), 'qualificationId' => $this -> getQualificationId(), 'courseTitleUA' => $this -> getCourseTitleUA(), 'courseTitleEN' => $this -> getCourseTitleEN(),
+            'loans' => $this -> getLoans(), 'hours' => $this -> getHours(), 'teaching' => $this -> getTeaching(), 'differential' => $this -> getDifferential(), 'semester' => $this -> getSemester(),
+            'teacherId' => $this -> getTeacherId()), JSON_FORCE_OBJECT);
+    }
 
 
 }
