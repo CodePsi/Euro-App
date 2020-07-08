@@ -47,7 +47,7 @@ class GraduatesDao extends AbstractDao implements Dao, ModelConverter
                       Firstname_EN, birthday, SerialDiploma, NumberDiploma, NumberAddition, PrevDocument_UA, PrevDocument_EN, 
                       prevSerialNumberAddition, DurationOfTraining_UA, DurationOfTraining_EN, TrainingStar, TrainingEnd,
                       Actual_number_estimates, DecisionDate, ProtNum, QualificationAwardedUA, QualificationAwardedEN, IssuedBy, IssuedBy_EN) 
-                VALUES (DEFAULT, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
+                VALUES (%d, DEFAULT, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
                 $object -> getQualificationId(),
                 $object -> getLastNameUA(),
                 $object -> getLastNameEN(),
@@ -149,31 +149,41 @@ class GraduatesDao extends AbstractDao implements Dao, ModelConverter
 
     function convertMysqlResultToModel(mysqli_result $mysqliResult): object
     {
-        $fetchedRow = $mysqliResult -> fetch_row();
-        Utils::cleanArrayFromNull($fetchedRow);
-        return new Graduates($fetchedRow[1],
-            $fetchedRow[0],
-            $fetchedRow[2],
-            $fetchedRow[3],
-            $fetchedRow[4],
-            $fetchedRow[5],
-            $fetchedRow[6],
-            $fetchedRow[7],
-            $fetchedRow[8],
-            $fetchedRow[9],
-            $fetchedRow[10],
-            $fetchedRow[11],
-            $fetchedRow[12],
-            $fetchedRow[13],
-            $fetchedRow[14],
-            $fetchedRow[15],
-            $fetchedRow[16],
-            $fetchedRow[17],
-            $fetchedRow[18],
-            $fetchedRow[19],
-            $fetchedRow[20],
-            $fetchedRow[21],
-            $fetchedRow[22],
-            $fetchedRow[23]);
+        $fetchedRow = array($mysqliResult -> fetch_row());
+        return $this -> convertArrayToModels($fetchedRow)[0];
+    }
+
+    function convertArrayToModels(array $array): array
+    {
+        $resultArray = array();
+        foreach ($array as $value) {
+            Utils::cleanArrayFromNull($value);
+            array_push($resultArray, new Graduates($value[1],
+                $value[0],
+                $value[2],
+                $value[3],
+                $value[4],
+                $value[5],
+                $value[6],
+                $value[7],
+                $value[8],
+                $value[9],
+                $value[10],
+                $value[11],
+                $value[12],
+                $value[13],
+                $value[14],
+                $value[15],
+                $value[16],
+                $value[17],
+                $value[18],
+                $value[19],
+                $value[20],
+                $value[21],
+                $value[22],
+                $value[23]));
+        }
+
+        return $resultArray;
     }
 }

@@ -45,7 +45,7 @@ class DisciplineDao extends AbstractDao implements Dao, ModelConverter
         if ($object instanceof Discipline) {
             $formatString = sprintf("INSERT INTO Discipline(Discipline_ID, Qualification_ID, Course_title_UA, 
                        Course_title_EN, Loans, Hours, Teaching, Differential, Semester, Teacher_ID) 
-                VALUES (DEFAULT, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
+                VALUES (DEFAULT, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', NULL);",
                 $object -> getQualificationId(),
                 $object -> getCourseTitleUA(),
                 $object -> getCourseTitleEN(),
@@ -53,8 +53,7 @@ class DisciplineDao extends AbstractDao implements Dao, ModelConverter
                 $object -> getHours(),
                 $object -> getTeaching(),
                 $object -> getDifferential(),
-                $object -> getSemester(),
-                $object -> getTeacherId()
+                $object -> getSemester()
             );
             $this -> connection -> execute_query($formatString);
             return $this -> connection -> getLastInsertedId();
@@ -92,10 +91,9 @@ class DisciplineDao extends AbstractDao implements Dao, ModelConverter
                      Teaching = '%s',
                      Differential = '%s',
                      Semester = '%s',
-                     Teacher_ID = '%s' WHERE Discipline_ID=%d",
+                     Teacher_ID = NULL WHERE Discipline_ID=%d",
                 $object -> getQualificationId(), $object -> getCourseTitleUA(), $object -> getCourseTitleEN(), $object -> getLoans(), $object -> getHours(),
-                $object -> getTeaching(), $object -> getDifferential(), $object -> getSemester(), $object -> getTeacherId(),
-                $object -> getId());
+                $object -> getTeaching(), $object -> getDifferential(), $object -> getSemester(), $object -> getId());
             return $this -> connection -> execute_query($formatString);
         }
 
@@ -117,17 +115,27 @@ class DisciplineDao extends AbstractDao implements Dao, ModelConverter
 
     function convertMysqlResultToModel(mysqli_result $mysqliResult): object
     {
-        $fetchedRow = $mysqliResult -> fetch_row();
-        Utils::cleanArrayFromNull($fetchedRow);
-        return new Discipline($fetchedRow[0],
-            $fetchedRow[1],
-            $fetchedRow[2],
-            $fetchedRow[3],
-            $fetchedRow[4],
-            $fetchedRow[5],
-            $fetchedRow[6],
-            $fetchedRow[7],
-            $fetchedRow[8],
-            $fetchedRow[9]);
+        $fetchedRow = array($mysqliResult -> fetch_row());
+        return $this -> convertArrayToModels($fetchedRow)[0];
+    }
+
+    function convertArrayToModels(array $array): array
+    {
+        $resultArray = array();
+        foreach ($array as $value) {
+            Utils::cleanArrayFromNull($value);
+            array_push($resultArray, new Discipline($value[0],
+                $value[1],
+                $value[2],
+                $value[3],
+                $value[4],
+                $value[5],
+                $value[6],
+                $value[7],
+                $value[8],
+                $value[9]));
+        }
+
+        return $resultArray;
     }
 }

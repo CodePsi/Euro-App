@@ -138,27 +138,36 @@ class QualificationDao extends AbstractDao implements Dao, ModelConverter
 
     function convertMysqlResultToModel(mysqli_result $mysqliResult): object
     {
-        $fetchedRow = $mysqliResult -> fetch_row();
-        Utils::cleanArrayFromNull($fetchedRow);
-        return new Qualification($fetchedRow[0],
-            $fetchedRow[1],
-            $fetchedRow[2],
-            $fetchedRow[3],
-            $fetchedRow[4],
-            $fetchedRow[5],
-            $fetchedRow[6],
-            $fetchedRow[7],
-            $fetchedRow[8],
-            $fetchedRow[9],
-            $fetchedRow[10],
-            $fetchedRow[11],
-            $fetchedRow[12],
-            $fetchedRow[13],
-            $fetchedRow[14],
-            $fetchedRow[15],
-            $fetchedRow[16],
-            $fetchedRow[17],
-            $fetchedRow[18]);
+        $fetchedRow = array($mysqliResult -> fetch_row());
+        return $this -> convertArrayToModels($fetchedRow)[0];
     }
 
+    function convertArrayToModels(array $array): array
+    {
+        $resultArray = array();
+        foreach ($array as $value) {
+            Utils::cleanArrayFromNull($value);
+            array_push($resultArray, new Qualification($value[0],
+                $value[1],
+                $value[2],
+                $value[3],
+                $value[4],
+                $value[5],
+                $value[6],
+                $value[7],
+                $value[8],
+                $value[9],
+                $value[10],
+                $value[11],
+                $value[12],
+                $value[13],
+                $value[14],
+                $value[15],
+                $value[16],
+                $value[17],
+                $value[18]));
+        }
+
+        return $resultArray;
+    }
 }

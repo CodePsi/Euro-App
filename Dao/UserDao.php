@@ -106,13 +106,23 @@ class UserDao extends AbstractDao implements Dao, ModelConverter
 
     function convertMysqlResultToModel(mysqli_result $mysqliResult): object
     {
-        $fetchedRow = $mysqliResult -> fetch_row();
-        Utils::cleanArrayFromNull($fetchedRow);
-        return new User($fetchedRow[0],
-            $fetchedRow[1],
-            $fetchedRow[2],
-            $fetchedRow[3],
-            $fetchedRow[4],
-            $fetchedRow[5]);
+        $fetchedRow = array($mysqliResult -> fetch_row());
+        return $this -> convertArrayToModels($fetchedRow)[0];
+    }
+
+    function convertArrayToModels(array $array): array
+    {
+        $resultArray = array();
+        foreach ($array as $value) {
+            Utils::cleanArrayFromNull($value);
+            array_push($resultArray, new User($value[0],
+                $value[1],
+                $value[2],
+                $value[3],
+                $value[4],
+                $value[5]));
+        }
+
+        return $resultArray;
     }
 }
