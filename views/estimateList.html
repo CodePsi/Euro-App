@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Euro Application - Estimates</title>
+    <script src="/euro_new/js/HttpRequest.js"></script>
+    <link href="/euro_new/css/style.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/v-tooltip"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<script type="text/x-template" id="modal-template">
+    <transition name="modal">
+        <div class="modal-mask">
+            <div class="modal-wrapper">
+                <div class="modal-container" v-bind:style="{width: width}">
+
+                    <div class="modal-header">
+                        <slot name="header">
+                            Header
+                        </slot>
+                    </div>
+
+                    <div class="modal-body">
+                        <slot name="body">
+                            Body
+                        </slot>
+                    </div>
+
+                    <div class="modal-footer">
+                        <slot name="footer">
+                            <button class="modal-default-button" @click="$emit('execute')">
+                                OK
+                            </button>
+                            <button class="modal-default-button" @click="$emit('close')">
+                                Close
+                            </button>
+
+                        </slot>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </transition>
+</script>
+<script type="text/x-template" id="grid-template">
+    <div class="grid-container">
+        <div class="scrollable-table" @scroll="tableHeaderFixed($event)">
+
+            <!--            @scroll="test($event)"-->
+            <table   id="table"
+                     data-toggle="table"
+                     data-height="460">
+                <thead ref="header">
+                <tr>
+                    <th v-for="key in columns"
+                        @click="sortBy(key)"
+                        :class="{ active: sortKey == key }">
+                        {{ key | capitalize }}
+                        <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+                    </span>
+                    </th>
+<!--                    <th style="min-width: 20px"></th>-->
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr v-for="entry in filteredHeroes" :ref="'graduate' + entry['id']">
+
+                    <td v-for="key in columns">
+                        <div v-if="key === 'студент'">{{entry[key]}}</div>
+<!--                        <div v-else v-for="mark in marksColumns" style="text-align: center">-->
+                        <div v-else :ref="'estimate' + entry[key]['id']">
+                            <div contenteditable="true">{{entry[key]['mark']}}</div>
+                            <div>{{entry[key]['ECTS']}}</div>
+                            <div>{{entry[key]['national']}}</div>
+<!--                            <div v-else>{{marks}}</div>-->
+                        </div>
+                    </td>
+<!--                    <td style="min-width: 20px">-->
+<!--                        <input :value="entry['id']" @click="displayDeleteGraduateModalWindow(entry['id'])" type="image" src="/icc/views/images/deleteIcon.png" style="max-width: 20px">-->
+<!--                    </td>-->
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+
+    </div>
+</script>
+<div id="app">
+    <div class="main-container">
+        <modal v-if="showDeleteEntryModal" @close="showDeleteEntryModal = false" @execute="deleteGraduate()">
+            <h3 slot="header">
+                Видалення оцінка (ID: {{ activeModalValue }})
+            </h3>
+            <h3 slot="body">
+                Ви впевнені?
+            </h3>
+        </modal>
+        <div class="content-container">
+            <form id="search" class="search-field">
+                <span class="text-caption">Пошук </span>
+                <input class="input-box" name="query" v-model="searchQuery" autocomplete="off">
+                <i class="fa fa-info-circle" v-tooltip.right-end="'Пошук відбувається по всім значенням рядків та стовпців таблиці.'"></i>
+            </form>
+<!--            <div class="add-button-container">-->
+<!--                <button class="add-button" @click="addNewGraduate()">Додати нового студента</button>-->
+<!--            </div>-->
+            <grid
+                    :heroes="gridData"
+                    :columns="gridColumns"
+                    :filter-key="searchQuery">
+            </grid>
+            <button class="save-button" @click="updateAllEntries()">Зберегти дані</button>
+        </div>
+
+    </div>
+
+</div>
+<script src="/euro_new/js/estimateList.js"></script>
+
+</body>
+</html>
