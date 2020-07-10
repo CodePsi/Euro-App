@@ -446,7 +446,7 @@ class Graduates
     }
 
     /**
-     * @param mixed $IssuedBy
+     * @param $issuedBy
      */
     public function setIssuedBy($issuedBy): void
     {
