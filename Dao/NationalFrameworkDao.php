@@ -98,7 +98,7 @@ class NationalFrameworkDao extends AbstractDao implements Dao, ModelConverter
                      Access_further_study_EN = '%s',
                      Professional_status_UA = '%s',
                      Professional_status_EN = '%s' WHERE Qualification_ID=%d",
-                $object -> getLevelQualificationUA(), $object -> getLevelQualificationEN(), $object -> getOfficialDurationProgrammerUA(), $object -> getOfficialDurationProgrammerEN(),
+                $object -> getLevelOfQualificationUA(), $object -> getLevelOfQualificationEN(), $object -> getOfficialDurationProgrammerUA(), $object -> getOfficialDurationProgrammerEN(),
                 $object -> getAccessRequirementsUA(), $object -> getAccessRequirementsEN(), $object -> getAccessFurtherStudyUA(), $object -> getAccessFurtherStudyEN(),
                 $object -> getProfessionalStatusUA(), $object -> getProfessionalStatusEN(), $object -> getQualificationId());
             return $this -> connection -> execute_query($formatString);
