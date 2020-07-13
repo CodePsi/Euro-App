@@ -16,6 +16,11 @@ class QualificationController
         echo json_encode($dao -> where(array("User_ID"), array($id), array('=')));
     }
 
+    public static function getQualifications() {
+        $dao = new QualificationDao();
+        echo $dao -> getAll();
+    }
+
     public static function getQualification($id) {
         $dao = new QualificationDao();
         try {
