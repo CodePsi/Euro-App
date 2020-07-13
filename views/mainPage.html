@@ -40,21 +40,21 @@
         </table>
     </script>
     <div id="app">
-        <button @click="">test</button>
-<!--        <div v-for="qualification in qualifications">-->
-<!--            <p>{{ qualification.id + " " + qualification.date + " " + qualification.abbreviation + " " + qualification.qualificationUA }}</p>-->
-<!--        </div>-->
-        <form id="search" class="search-field">
-            <span class="text-caption">Search </span><input class="input-box" name="query" v-model="searchQuery" autocomplete="off">
-        </form>
-    <grid
-            :heroes="gridData"
-            :columns="gridColumns"
-            :filter-key="searchQuery">
-    </grid>
-    <div class="table-pagination">
-        <button class="standard-button" v-for="page in pagesArray" @click="setPage(page)">{{page}}</button>
-    </div>
+        <div class="main-container">
+            <div class="content-container">
+                <form id="search" class="search-field">
+                    <span class="text-caption">Search </span><input class="input-box" name="query" v-model="searchQuery" autocomplete="off">
+                </form>
+                <grid
+                        :heroes="gridData"
+                        :columns="gridColumns"
+                        :filter-key="searchQuery">
+                </grid>
+                <div class="table-pagination">
+                    <button class="standard-button" v-for="page in pagesArray" @click="setPage(page)">{{page}}</button>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="/euro_new/js/controlPage.js"></script>
 </body>

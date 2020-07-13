@@ -8,7 +8,19 @@
     <script src="https://unpkg.com/vue"></script>
 </head>
 <body>
+    <script type="text/x-template" id="euro-header">
+        <div class="header-container">
+            <button class="standard-button" @click="redirect('/euro_new/control-page')">Головна сторінка</button>
+            <button class="standard-button" @click="redirect('qualification')">Здобуття кваліфікації</button>
+            <button class="standard-button" @click="redirect('nationalFramework ')">Національна рамка</button>
+            <button class="standard-button" @click="redirect('contentsAndResults')">Зміст та результати</button>
+            <button class="standard-button" @click="redirect('graduateList')">Список випускників</button>
+            <button class="standard-button" @click="redirect('disciplineList')">Дисципліни</button>
+            <button class="standard-button" @click="redirect('estimateList')">Оцінок</button>
+        </div>
+    </script>
     <div id="app">
+        <euro-header></euro-header>
         <div class="main-container">
             <div class="content-container">
                 <label class="label-box">Назва групи(Скорочено): <textarea v-model="abbreviation" class="textarea-box" placeholder="..." rows="3"></textarea></label>

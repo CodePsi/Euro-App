@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Euro Application - National Framework</title>
+    <script src="/euro_new/js/HttpRequest.js"></script>
+    <link href="/euro_new/css/style.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<script type="text/x-template" id="euro-header">
+    <div class="header-container">
+        <button class="standard-button" @click="redirect('/euro_new/control-page')">Головна сторінка</button>
+        <button class="standard-button" @click="redirect('qualification')">Здобуття кваліфікації</button>
+        <button class="standard-button" @click="redirect('nationalFramework ')">Національна рамка</button>
+        <button class="standard-button" @click="redirect('contentsAndResults')">Зміст та результати</button>
+        <button class="standard-button" @click="redirect('graduateList')">Список випускників</button>
+        <button class="standard-button" @click="redirect('disciplineList')">Дисципліни</button>
+        <button class="standard-button" @click="redirect('estimateList')">Оцінок</button>
+    </div>
+</script>
+<div id="app">
+    <euro-header></euro-header>
+    <div class="main-container">
+        <div class="content-container">
+            <label class="label-box">Рівень кваліфікації: <textarea v-model="levelOfQualificationUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Level of qualification: <textarea v-model="levelOfQualificationEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Офіційна тривалість програми: <textarea v-model="officialDurationProgrammeUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Official duration of programme: <textarea v-model="officialDurationProgrammeEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Вимоги до вступу: <textarea v-model="accessRequirementsUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Access requirements(s): <textarea v-model="accessRequirementsEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Академічні права: <textarea v-model="accessFurtherStudyUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Access to further study: <textarea v-model="accessFurtherStudyEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Професійні права: <textarea v-model="professionalStatusUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Professional status: <textarea v-model="professionalStatusEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <div class="submit-button-container">
+                <button @click="updateQualification" type="submit" class="submit-button">Зберегти</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/euro_new/js/nationalFramework.js"></script>
+
+</body>
+</html>

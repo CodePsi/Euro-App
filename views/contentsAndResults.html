@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Euro Application - National Framework</title>
+    <script src="/euro_new/js/HttpRequest.js"></script>
+    <link href="/euro_new/css/style.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<script type="text/x-template" id="euro-header">
+    <div class="header-container">
+        <button class="standard-button" @click="redirect('/euro_new/control-page')">Головна сторінка</button>
+        <button class="standard-button" @click="redirect('qualification')">Здобуття кваліфікації</button>
+        <button class="standard-button" @click="redirect('nationalFramework ')">Національна рамка</button>
+        <button class="standard-button" @click="redirect('contentsAndResults')">Зміст та результати</button>
+        <button class="standard-button" @click="redirect('graduateList')">Список випускників</button>
+        <button class="standard-button" @click="redirect('disciplineList')">Дисципліни</button>
+        <button class="standard-button" @click="redirect('estimateList')">Оцінок</button>
+    </div>
+</script>
+<div id="app">
+    <euro-header></euro-header>
+    <div class="main-container">
+        <div class="content-container">
+            <label class="label-box">Форма навчання: <textarea v-model="formOfStudyUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Mode of study: <textarea v-model="formOfStudyEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Навчальний план: <textarea v-model="programSpecificationUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Programme Specification: <textarea v-model="programSpecificationEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Знання і розуміння: <textarea v-model="knowledgeUnderstandingUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Knowledge and understanding: <textarea v-model="knowledgeUnderstandingEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Застосування знань і розумінь: <textarea v-model="applicationKnowledgeUnderstandingUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Applying knowledge and understanding: <textarea v-model="applicationKnowledgeUnderstandingUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Формування суджень: <textarea v-model="makingJudgmentsUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Making judgments: <textarea v-model="makingJudgmentsEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <div class="submit-button-container">
+                <button @click="updateQualification" type="submit" class="submit-button">Зберегти</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/euro_new/js/nationalFramework.js"></script>
+
+</body>
+</html>
