@@ -1,3 +1,12 @@
+Vue.component('euro-header', {
+    template: '#euro-header',
+    methods: {
+        redirect: function(url) {
+            window.location.href = url;
+        }
+    }
+});
+
 var app = new Vue({
     el: '#app',
     data: {

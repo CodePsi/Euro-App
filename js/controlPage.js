@@ -49,10 +49,11 @@ var componentGrid = Vue.component('grid', {
             this.sortOrders[key] = this.sortOrders[key] * -1;
         },
         editQualificationEntry: function (id) {
-            window.location += "group/edit/" + id + "/qualification";
+            window.location = "/euro_new/control-page/group/edit/"+id+"/qualification";
         }
     }
 });
+
 var app = new Vue({
     el: '#app',
     data: {
