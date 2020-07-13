@@ -7,8 +7,8 @@ namespace Euro\Model;
 class NationalFramework
 {
     private $qualificationId;
-    private $levelQualificationUA;
-    private $levelQualificationEN;
+    private $levelOfQualificationUA;
+    private $levelOfQualificationEN;
     private $officialDurationProgrammerUA;
     private $officialDurationProgrammerEN;
     private $accessRequirementsUA;
@@ -21,8 +21,8 @@ class NationalFramework
     /**
      * NationalFramework constructor.
      * @param $qualificationId
-     * @param $levelQualificationUA
-     * @param $levelQualificationEN
+     * @param $levelOfQualificationUA
+     * @param $levelOfQualificationEN
      * @param $officialDurationProgrammerUA
      * @param $officialDurationProgrammerEN
      * @param $accessRequirementsUA
@@ -32,11 +32,11 @@ class NationalFramework
      * @param $professionalStatusUA
      * @param $professionalStatusEN
      */
-    public function __construct($qualificationId, $levelQualificationUA, $levelQualificationEN, $officialDurationProgrammerUA, $officialDurationProgrammerEN, $accessRequirementsUA, $accessRequirementsEN, $accessFurtherStudyUA, $accessFurtherStudyEN, $professionalStatusUA, $professionalStatusEN)
+    public function __construct($qualificationId, $levelOfQualificationUA, $levelOfQualificationEN, $officialDurationProgrammerUA, $officialDurationProgrammerEN, $accessRequirementsUA, $accessRequirementsEN, $accessFurtherStudyUA, $accessFurtherStudyEN, $professionalStatusUA, $professionalStatusEN)
     {
         $this->qualificationId = $qualificationId;
-        $this->levelQualificationUA = $levelQualificationUA;
-        $this->levelQualificationEN = $levelQualificationEN;
+        $this->levelOfQualificationUA = $levelOfQualificationUA;
+        $this->levelOfQualificationEN = $levelOfQualificationEN;
         $this->officialDurationProgrammerUA = $officialDurationProgrammerUA;
         $this->officialDurationProgrammerEN = $officialDurationProgrammerEN;
         $this->accessRequirementsUA = $accessRequirementsUA;
@@ -66,33 +66,33 @@ class NationalFramework
     /**
      * @return mixed
      */
-    public function getLevelQualificationUA()
+    public function getLevelOfQualificationUA()
     {
-        return $this->levelQualificationUA;
+        return $this->levelOfQualificationUA;
     }
 
     /**
-     * @param mixed $levelQualificationUA
+     * @param mixed $levelOfQualificationUA
      */
-    public function setLevelQualificationUA($levelQualificationUA): void
+    public function setLevelQualificationUA($levelOfQualificationUA): void
     {
-        $this->levelQualificationUA = $levelQualificationUA;
+        $this->levelOfQualificationUA = $levelOfQualificationUA;
     }
 
     /**
      * @return mixed
      */
-    public function getLevelQualificationEN()
+    public function getLevelOfQualificationEN()
     {
-        return $this->levelQualificationEN;
+        return $this->levelOfQualificationEN;
     }
 
     /**
-     * @param mixed $levelQualificationEN
+     * @param $levelOfQualificationEN
      */
-    public function setLevelQualificationEN($levelQualificationEN): void
+    public function setLevelQualificationEN($levelOfQualificationEN): void
     {
-        $this->levelQualificationEN = $levelQualificationEN;
+        $this->levelOfQualificationEN = $levelOfQualificationEN;
     }
 
     /**
@@ -223,6 +223,10 @@ class NationalFramework
         $this->professionalStatusEN = $professionalStatusEN;
     }
 
-
+    public function toJson(): string {
+        return json_encode(array('qualificationId' => intval($this -> getQualificationId()), 'levelOfQualificationUA' => $this -> getLevelOfQualificationUA(), 'levelOfQualificationEN' => $this -> getLevelOfQualificationEN(), 'officialDurationProgrammeUA' => $this -> getOfficialDurationProgrammerUA(),
+            'officialDurationProgrammeEN' => $this -> getOfficialDurationProgrammerEN(), 'accessRequirementsUA' => $this -> getAccessRequirementsUA(), 'accessRequirementsEN' => $this -> getAccessRequirementsEN(), 'accessFurtherStudyUA' => $this -> getAccessFurtherStudyUA(), 'accessFurtherStudyEN' => $this -> getAccessFurtherStudyEN(),
+            'professionalStatusUA' => $this -> getProfessionalStatusUA(), 'professionalStatusEN' => $this -> getProfessionalStatusEN()), JSON_FORCE_OBJECT);
+    }
 
 }
