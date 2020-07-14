@@ -109,6 +109,17 @@ var app = new Vue({
                 };
                 request.sendGETRequest("/euro_new/qualifications/", "");
         },
+        addNewQualification: function() {
+            var request = new HttpRequest();
+            request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
+                if (request.isRequestSuccessful()) {
+                    console.log(request.xmlHttpRequestInstance.responseText);
+                    app.updateAllQualifications();
+                }
+            };
+
+            request.sendPOSTRequest("/euro_new/qualifications/", "");
+        },
         setUpPagination: function () {
             app.pages = Math.ceil(app.gridDataAll.length / app.countEntriesEachPage);
             app.setPage(1);

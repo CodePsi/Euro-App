@@ -29,7 +29,7 @@ var app = new Vue({
     },
     created: function () {
         var pathname = window.location.pathname;
-        this.qualificationId = pathname.match(/\d/)[0]; //Getting ID from URL (particularly from URI in this case)
+        this.qualificationId = pathname.match(/\d+/)[0]; //Getting ID from URL (particularly from URI in this case)
         var request = new HttpRequest();
         request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
             if (request.isRequestSuccessful()) {
@@ -70,8 +70,7 @@ var app = new Vue({
                     console.log(request.xmlHttpRequestInstance.responseText);
                 }
             };
-
-            request.sendPUTRequest("/euro_new/qualifications/" + app.qualificationId, JSON.stringify({'abbreviation': app.abbreviation, 'degree': app.degree, 'qualificationUA': app.qualificationUA,
+            request.sendPUTRequest("/euro_new/qualifications/" + this.qualificationId, JSON.stringify({'abbreviation': app.abbreviation, 'degree': app.degree, 'qualificationUA': app.qualificationUA,
             'qualificationEN': app.qualificationEN, 'fieldOfStudyUA': app.fieldOfStudyUA, 'fieldOfStudyEN': app.fieldOfStudyEN, 'firstSpecialtyUA': app.firstSpecialtyUA, 'firstSpecialtyEN': app.firstSpecialtyEN, 'educationalProgramUA': app.educationProgramUA, 'educationalProgramEN': app.educationProgramEN,
             'secondSpecialtyUA': app.secondSpecialtyUA, 'secondSpecialtyEN': app.secondSpecialtyEN, 'specializationUA': app.specializationUA, 'specializationEN': app.specializationEN}))
         }

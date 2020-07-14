@@ -134,7 +134,7 @@ var app = new Vue({
     },
     created: function() {
         var pathname = window.location.pathname;
-        this.qualificationId = pathname.match(/\d/)[0];
+        this.qualificationId = pathname.match(/\d+/)[0]; //Getting ID from URL (particularly from URI in this case)
         // this.dddas.push(1);
         this.setUpAllGraduates();
         this.setUpAllDisciplines();

@@ -25,7 +25,7 @@ var app = new Vue({
     },
     created: function () {
         var pathname = window.location.pathname;
-        this.qualificationId = pathname.match(/\d/)[0]; //Getting ID from URL (particularly from URI in this case)
+        this.qualificationId = pathname.match(/\d+/)[0]; //Getting ID from URL (particularly from URI in this case)
         var request = new HttpRequest();
         request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
             if (request.isRequestSuccessful()) {
