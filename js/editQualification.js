@@ -67,7 +67,13 @@ var app = new Vue({
             var request = new HttpRequest();
             request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
                 if (request.isRequestSuccessful()) {
-                    console.log(request.xmlHttpRequestInstance.responseText);
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Дані було збережено',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                 }
             };
             request.sendPUTRequest("/euro_new/qualifications/" + this.qualificationId, JSON.stringify({'abbreviation': app.abbreviation, 'degree': app.degree, 'qualificationUA': app.qualificationUA,
