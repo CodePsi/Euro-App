@@ -6,8 +6,7 @@ namespace Euro\Route;
 
 abstract class AbstractRouterCollection implements RouterCollectionInterface
 {
-    /*
-     *
+    /**
      * @var array
      */
     public $routes = [];

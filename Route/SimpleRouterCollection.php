@@ -10,7 +10,7 @@ class SimpleRouterCollection extends AbstractRouterCollection implements RouterC
         $routes = [];
         foreach ($this->routes as $route) {
 
-            if (preg_match($route -> getUri(), $uri, $matches)) {
+            if (preg_match($route -> getRegexUri(), $uri, $matches)) {
                 $this->setParametersToRoute($route, $matches);
                 array_push($routes, $route);
             }

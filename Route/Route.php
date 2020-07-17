@@ -19,6 +19,7 @@ class Route
     public static $routes = array();
 
     private $uri;
+    private $regexUri;
 
     private $method;
 
@@ -98,6 +99,26 @@ class Route
     public function getAction(): Closure
     {
         return $this->action;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRegexUri()
+    {
+        return $this->regexUri;
+    }
+
+    /**
+     * @param mixed $regexUri
+     */
+    public function setRegexUri($regexUri): void
+    {
+        $this->regexUri = $regexUri;
+    }
+
+    public function call() {
+        return $this->getAction()->call($this, ...$this->getParameters());
     }
 
 

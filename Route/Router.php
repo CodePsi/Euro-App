@@ -5,18 +5,23 @@ namespace Euro\Route;
 
 
 use Closure;
-use Euro\Json\JSON;
+use Euro\Response\JSON;
 use Euro\Render\Render;
+use Euro\Response\ResponseDataReceiver;
 
 class Router
 {
-    /*
-     *
+    /**
      * @var \Euro\Route\RouterCollectionInterface
      */
     public $routes;
 
-    /*
+    /**
+     * @var \Euro\Route\NavigationGuardsInterface
+     */
+    public $navigationGuards;
+
+    /**
      * @var \Euro\Route\Router
      * */
     private static $instance;
@@ -24,6 +29,7 @@ class Router
     private function __construct()
     {
         $this->routes = new SimpleRouterCollection();
+        $this->navigationGuards = new NavigationGuards($this->routes);
     }
 
     /**
@@ -41,27 +47,32 @@ class Router
     }
 
     public function get(string $uri, Closure $action) {
-        $this->routes -> add(self::createRoute('GET', self::convertUriWithParametersToRegex($uri), $action));
+        $this->routes -> add(self::createRoute('GET', $uri, $action));
     }
 
     public function post(string $uri, Closure $action) {
-        $this->routes -> add(self::createRoute('POST', self::convertUriWithParametersToRegex($uri), $action));
+        $this->routes -> add(self::createRoute('POST', $uri, $action));
     }
 
     public function put(string $uri, Closure $action) {
-        $this->routes -> add(self::createRoute('PUT', self::convertUriWithParametersToRegex($uri), $action));
+        $this->routes -> add(self::createRoute('PUT', $uri, $action));
     }
 
     public function patch(string $uri, Closure $action) {
-        $this->routes -> add(self::createRoute('PATCH', self::convertUriWithParametersToRegex($uri), $action));
+        $this->routes -> add(self::createRoute('PATCH', $uri, $action));
     }
 
     public function delete(string $uri, Closure $action) {
-        $this->routes -> add(self::createRoute('DELETE', self::convertUriWithParametersToRegex($uri), $action));
+        $this->routes -> add(self::createRoute('DELETE', $uri, $action));
+    }
+
+    public function beforeEach(Closure $action) {
+        $this->navigationGuards -> beforeEachAction = $action;
     }
 
     public function createRoute($method, $uri, $action): Route {
         $route = new Route($method, $uri, $action);
+        $route -> setRegexUri(self::convertUriWithParametersToRegex($uri));
         $route -> setRouter($this);
         return $route;
     }
@@ -70,27 +81,19 @@ class Router
         $urlSplit = explode('?', $uri);
         $args = '';
         $onlyUri = $urlSplit[0];
-//        if (self::has($url, self::$middlewareRoutes)) {
-//            $status = self::$middlewareRoutes[$url] -> call(new Route());
-//            if ($status !== true) {
-//                $decodedStatus = json_decode($status);
-//                header("location: /euro_new/errorPage?message=" . $decodedStatus -> message . "&responseCode=" . $_SERVER['REDIRECT_STATUS']);
-//                return;
-//            }
-//
-//        }
-//        echo $url;
-        JSON::initializeQueryParams($urlSplit[1]);
+
+        ResponseDataReceiver::initializeQueryParams($urlSplit[1]);
 
 
-//        $matches = null;
-//        $success = ;
 
         $routes = self::$instance -> routes -> getRoutesByUri($onlyUri);
         foreach ($routes as $route) {
-            if (isset($route)) {
+            if (isset($route) && $route instanceof Route) {
                 if ($_SERVER['REQUEST_METHOD'] === $route->getMethod()) {
-                    Render::render($route->getAction()->call($route, ...$route->getParameters()));
+                    if (isset($this->navigationGuards -> beforeEachAction))
+                        Render::render($this->navigationGuards -> beforeEach($route));
+                    else
+                        Render::render($route -> call());
                     break;
                 }
             } else {
