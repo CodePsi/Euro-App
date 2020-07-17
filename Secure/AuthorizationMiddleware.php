@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Icc\Secure;
+namespace Euro\Secure;
 
 
 class AuthorizationMiddleware
 {
     public static function userAuthorized() {
-        return JWTSecurity::validateToken();
+        return isset($_COOKIE["PHPSESSID"]) && isset($_SESSION["user_id"]);
     }
 }
