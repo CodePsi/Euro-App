@@ -223,7 +223,11 @@ class ContentsAndResults
         $this->makingJudgmentsEN = $makingJudgmentsEN;
     }
 
-
+    public function toJson(): string {
+        return json_encode(array('qualificationId' => intval($this -> getQualificationId()), 'formOfStudyUA' => $this -> getFormStudyUA(), 'formOfStudyEN' => $this -> getFormStudyEN(), 'programSpecificationUA' => $this -> getProgramSpecificationUA(),
+            'programSpecificationEN' => $this -> getProgramSpecificationEN(), 'knowledgeUnderstandingUA' => $this -> getKnowledgeUnderstandingUA(), 'knowledgeUnderstandingEN' => $this -> getKnowledgeUnderstandingEN(), 'applicationKnowledgeUnderstandingUA' => $this -> getApplicationKnowledgeUnderstandingUA(), 'applicationKnowledgeUnderstandingEN' => $this -> getApplicationKnowledgeUnderstandingEN(),
+            'makingJudgmentsUA' => $this -> getMakingJudgmentsUA(), 'makingJudgmentsEN' => $this -> getMakingJudgmentsEN()), JSON_FORCE_OBJECT);
+    }
 
 
 }
