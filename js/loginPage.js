@@ -16,8 +16,9 @@ var app = new Vue({
                     var response = JSON.parse(request.xmlHttpRequestInstance.responseText);
                     if (response['response'] === "Success")
                     window.location.href = "/euro_new/control-page";
-                } else if (request.xmlHttpRequestInstance.status === 401){
-                    // app.warning.display = 'block';
+                    // console.log(response);
+                } else if (request.xmlHttpRequestInstance.status === 401 || request.xmlHttpRequestInstance.status === 403) {
+                    app.warning.display = 'block';
                 }
             };
             request.sendPOSTRequest("/euro_new/login/authorization", JSON.stringify({ 'login': this.login, 'password': this.password }));

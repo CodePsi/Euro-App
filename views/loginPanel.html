@@ -4,18 +4,43 @@
     <meta charset="UTF-8">
     <title>Euro Application - Login Panel</title>
     <script src="/euro_new/js/HttpRequest.js"></script>
-    <link href="/euro_new/css/style.css" rel="stylesheet">
+    <link href="/euro_new/css/login.css" rel="stylesheet">
     <script src="https://unpkg.com/vue"></script>
 </head>
-<body>
+<body class="">
     <div id="app">
-        <label>
-            <input v-model="login">
-        </label>
-        <label>
-            <input v-model="password">
-        </label>
-        <button @click="logIn()">Login</button>
+<!--        <div class='bold-line'></div>-->
+<!--        <div class='container'>-->
+<!--            <div class='window'>-->
+<!--                <div class='overlay'></div>-->
+<!--                <div class='content'>-->
+<!--                    <div class='welcome'>Вітаємо!</div>-->
+<!--                    <div class='subtitle'>Для входу в акаунт Вам потрібно ввести логін та пароль. Якщо у Вас немає акаунта, то Вам потрібно звернутися в службу підтримки</div>-->
+<!--                    <div v-bind:style="warning" class="subtitle">Неправильні дані!</div>-->
+<!--                    <div class='input-fields'>-->
+<!--                        <input type='text' placeholder='Username' class='input-line full-width' v-model="login">-->
+<!--                        <input type='password' placeholder='Password' class='input-line full-width' v-model="password">-->
+
+<!--                    </div>-->
+<!--                    <div class='spacing'><span class='highlight'></span></div>-->
+<!--                    <div><button class='ghost-round full-width' @click="logIn()">Log In</button></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--    </div>-->
+        <div class="main-container">
+            <div class="container">
+                <div class='welcome'>Вітаємо!</div>
+                <div class='subtitle'>Для входу в акаунт Вам необхідно ввести логін та пароль. Якщо у Вас немає акаунта, то Вам потрібно звернутися до служби підтримки</div>
+                <div v-bind:style="warning" class="subtitle">Неправильні дані!</div>
+                <div class='input-fields'>
+                    <input type='text' placeholder='Username' class='input-line full-width' v-model="login">
+                    <input type='password' placeholder='Password' class='input-line full-width' v-model="password">
+
+                </div>
+                <div class='spacing'><span class='highlight'></span></div>
+                <div><button class='ghost-round' @click="logIn()">Log In</button></div>
+            </div>
+        </div>
     </div>
     <script src="/euro_new/js/loginPage.js"></script>
 
