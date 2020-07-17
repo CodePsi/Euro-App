@@ -45,6 +45,9 @@
                 <form id="search" class="search-field">
                     <span class="text-caption">Search </span><input class="input-box" name="query" v-model="searchQuery" autocomplete="off">
                 </form>
+                <div class="add-button-container">
+                    <button class="add-button" @click="addNewQualification()">Додати новую групу</button>
+                </div>
                 <grid
                         :heroes="gridData"
                         :columns="gridColumns"

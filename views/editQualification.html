@@ -6,6 +6,7 @@
     <script src="/euro_new/js/HttpRequest.js"></script>
     <link href="/euro_new/css/style.css" rel="stylesheet">
     <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 </head>
 <body>
     <script type="text/x-template" id="euro-header">
@@ -41,7 +42,7 @@
                 <label class="label-box">Спеціалізація: <textarea v-model="specializationUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
                 <label class="label-box">Specialization: <textarea v-model="specializationEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
                 <div class="submit-button-container">
-                    <button @click="updateQualification" type="submit" class="submit-button">Зберегти</button>
+                    <button @click="updateQualification()" type="submit" class="submit-button">Зберегти</button>
                 </div>
             </div>
         </div>
