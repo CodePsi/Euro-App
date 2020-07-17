@@ -17,6 +17,9 @@ class LoginController
             $_SESSION['is_admin'] = $user[0][5];
 //            $_SESSION['password'] = $user[0][2];
             echo json_encode(array("response" => "Success"));
+        } else {
+            http_response_code(403);
+            echo json_encode(array("response" => "Wrong data"));
         }
     }
 }
