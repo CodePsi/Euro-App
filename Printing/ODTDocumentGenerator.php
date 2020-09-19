@@ -138,15 +138,14 @@ class ODTDocumentGenerator implements Document
             $processor -> replacePattern($prefix . 'allcrd', $this->allCredits);
             $processor -> replacePattern($prefix . 'allhr', $this->allHours);
 
-
-
-
             $fileHandler -> createODTCopy($odt);
             $fileHandler -> writeContentToFile($processor -> content);
             $fileHandler -> setUpODTDocument($odt . '.odt');
-//            var_dump($i);
         }
+        header("Content-Disposition: attachment; filename=\"" . basename($fileHandler -> zipFileName) . "\"");
+        $fileHandler->generalZipArchive -> close();
 
+        readfile($fileHandler -> zipFileName);
     }
 
     private function addDisciplines(int &$unitCode, array $estimatesModels, int $teaching, DisciplineDao $disciplineDao, Table $table) {

@@ -97,7 +97,8 @@
         <button class="standard-button" @click="redirect('contentsAndResults')">Зміст та результати</button>
         <button class="standard-button" @click="redirect('graduateList')">Список випускників</button>
         <button class="standard-button" @click="redirect('disciplineList')">Дисципліни</button>
-        <button class="standard-button" @click="redirect('estimateList')">Оцінок</button>
+        <button class="standard-button" @click="redirect('estimateList')">Оцінки</button>
+        <button class="standard-button" @click="getODT()">Сформувати додатки</button>
     </div>
 </script>
     <div id="app">
@@ -111,6 +112,15 @@
                     Ви впевнені?
                 </h3>
             </modal>
+            <modal v-if="showInfoEntryModal" @close="showInfoEntryModal = false" @execute="showInfoEntryModal = false">
+                <h3 slot="header">
+                    Відсоток заповненості
+                </h3>
+                <h3 slot="body">
+                    Відсоток заповненості: {{percentOfFullness}}%<br/>
+
+                </h3>
+            </modal>
             <div class="content-container">
                 <form id="search" class="search-field">
                     <span class="text-caption">Пошук </span>
@@ -119,6 +129,7 @@
                 </form>
                 <div class="add-button-container">
                     <button class="add-button" @click="addNewGraduate()">Додати нового студента</button>
+                    <button class="add-button" @click="showInfoEntryModal = true">Відсоток заповненості</button>
                 </div>
                 <grid
                         :heroes="gridData"

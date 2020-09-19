@@ -107,7 +107,8 @@
         <button class="standard-button" @click="redirect('contentsAndResults')">Зміст та результати</button>
         <button class="standard-button" @click="redirect('graduateList')">Список випускників</button>
         <button class="standard-button" @click="redirect('disciplineList')">Дисципліни</button>
-        <button class="standard-button" @click="redirect('estimateList')">Оцінок</button>
+        <button class="standard-button" @click="redirect('estimateList')">Оцінки</button>
+        <button class="standard-button" @click="getODT()">Сформувати додатки</button>
     </div>
 </script>
 <div id="app">
@@ -121,7 +122,7 @@
                 Ви впевнені?
             </h3>
         </modal>
-        <modal v-if="showInfoEntryModal" @close="showInfoEntryModal = false" @execute="showInfoEntryModal = false">
+        <modal v-if="showInfoAboutTableEntryModal" @close="showInfoAboutTableEntryModal = false" @execute="showInfoAboutTableEntryModal = false">
             <h3 slot="header">
                 Інформація про таблицю
             </h3>
@@ -129,6 +130,15 @@
                 Кількість годин: {{totalHours}}<br/>
                 Кількість кредитів: {{totalLoans}}<br/>
                 Кількість дисциплін: {{amountOfDisciplines}}<br/>
+            </h3>
+        </modal>
+        <modal v-if="showInfoEntryModal" @close="showInfoEntryModal = false" @execute="showInfoEntryModal = false">
+            <h3 slot="header">
+                Відсоток заповненості
+            </h3>
+            <h3 slot="body">
+                Відсоток заповненості: {{percentOfFullness}}%<br/>
+
             </h3>
         </modal>
 
@@ -140,8 +150,9 @@
             </form>
             <div class="add-button-container">
 
-                <button class="add-button" @click="showInfoEntryModal = true">Переглянути інформацію про таблицю</button>
-                <button class="add-button" @click="addNewDiscipline()">Додати нового дисципліну</button>
+                <button class="add-button" @click="showInfoAboutTableEntryModal = true">Переглянути інформацію про таблицю</button>
+                <button class="add-button" @click="addNewDiscipline()">Додати нову дисципліну</button>
+                <button class="add-button" @click="showInfoEntryModal = true">Відсоток заповненості</button>
             </div>
             <grid
                     :heroes="gridData"

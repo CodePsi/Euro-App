@@ -377,7 +377,7 @@ class Qualification
 
     public function toJson(): string {
         return json_encode(array('id' => intval($this -> getId()), 'qualificationEN' => $this -> getQualificationEN(), 'qualificationUA' => $this -> getQualificationUA(), 'mainFieldStudyUA' => $this -> getMainFieldStudyUA(),
-            'mainFieldStudyEN' => $this -> getMainFieldStudyEN(), 'degree' => $this -> getDegree(), 'date' => $this -> getDate(), 'userId' => $this -> getUserId(), 'abbreviation' => $this -> getAbbreviation(),
+            'mainFieldStudyEN' => $this -> getMainFieldStudyEN(), 'degree' => $this -> getDegree(), 'date' => date('Y-m-d', $this -> getDate()), 'userId' => $this -> getUserId(), 'abbreviation' => $this -> getAbbreviation(),
             'fieldStudyUA' => $this -> getFirstSpecialtyUA(), 'fieldStudyEN' => $this -> getFieldStudyEN(), 'firstSpecialtyUA' => $this -> getFirstSpecialtyUA(), 'firstSpecialtyEN' => $this -> getFirstSpecialtyEN(),
             'secondSpecialtyUA' => $this -> getSecondSpecialtyUA(), 'secondSpecialtyEN' => $this -> getSecondSpecialtyEN(), 'specializationUA' => $this -> getSpecializationUA(), 'specializationEN' => $this -> getSpecializationUA(),
             'educationProgramUA' => $this -> getEducationalProgramUA(), 'educationProgramEN' => $this -> getEducationalProgramEN()), JSON_FORCE_OBJECT);

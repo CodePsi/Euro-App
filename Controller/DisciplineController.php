@@ -40,7 +40,7 @@ class DisciplineController
             $dao = new DisciplineDao();
             $estimateDao = new EstimatesDao();
 
-            $entry = new Discipline(-1, $qualificationId, '', '', '', '', null, '', '', '');
+            $entry = new Discipline(-1, $qualificationId, '', '', 0.0, 0, 0, '', 0, '');
             $disciplineId = $dao->save($entry);
             $graduateDao = new GraduatesDao();
             $graduates = $graduateDao -> where(array('Qualification_ID'), array($qualificationId), array('='));

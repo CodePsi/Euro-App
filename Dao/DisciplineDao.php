@@ -45,7 +45,7 @@ class DisciplineDao extends AbstractDao implements Dao, ModelConverter
         if ($object instanceof Discipline) {
             $formatString = sprintf("INSERT INTO Discipline(Discipline_ID, Qualification_ID, Course_title_UA, 
                        Course_title_EN, Loans, Hours, Teaching, Differential, Semester, Teacher_ID) 
-                VALUES (DEFAULT, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', NULL);",
+                VALUES (DEFAULT, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', 0);",
                 $object -> getQualificationId(),
                 $object -> getCourseTitleUA(),
                 $object -> getCourseTitleEN(),
@@ -90,10 +90,10 @@ class DisciplineDao extends AbstractDao implements Dao, ModelConverter
                      Hours = '%s',
                      Teaching = '%s',
                      Differential = '%s',
-                     Semester = '%s',
-                     Teacher_ID = NULL WHERE Discipline_ID=%d",
+                     Semester = '%s' WHERE Discipline_ID=%d",
                 $object -> getQualificationId(), $object -> getCourseTitleUA(), $object -> getCourseTitleEN(), $object -> getLoans(), $object -> getHours(),
                 $object -> getTeaching(), $object -> getDifferential(), $object -> getSemester(), $object -> getId());
+
             return $this -> connection -> execute_query($formatString);
         }
 

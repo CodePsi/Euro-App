@@ -3,10 +3,24 @@ Vue.component('euro-header', {
     methods: {
         redirect: function(url) {
             window.location.href = url;
+        },
+        getODT: function() {
+            var win = window.open("/euro_new/printing/" + app.qualificationId + "/odt", '_blank');
+            win.focus();
         }
     }
 });
-
+Vue.component('modal', {
+    template: '#modal-template',
+    props: {
+        width: String
+    },
+    methods: {
+        getActiveID: function() {
+            return app.activeModalValue
+        }
+    }
+});
 var app = new Vue({
     el: '#app',
     data: {
@@ -25,7 +39,9 @@ var app = new Vue({
         specializationUA: '',
         specializationEN: '',
         qualificationId: -1,
-        qualificationData: []
+        qualificationData: [],
+        percentOfFullness: 0,
+        showInfoEntryModal: false
     },
     created: function () {
         var pathname = window.location.pathname;
@@ -34,6 +50,8 @@ var app = new Vue({
         request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
             if (request.isRequestSuccessful()) {
                 var qualificationJSON = JSON.parse(request.xmlHttpRequestInstance.responseText);
+                app.percentOfFullness = Math.round(app.calculatePercentOfFullness(qualificationJSON) * 100);
+
                 app.abbreviation = qualificationJSON.abbreviation;
                 app.degree = qualificationJSON.degree;
                 app.qualificationUA = qualificationJSON.qualificationUA;
@@ -79,6 +97,17 @@ var app = new Vue({
             request.sendPUTRequest("/euro_new/qualifications/" + this.qualificationId, JSON.stringify({'abbreviation': app.abbreviation, 'degree': app.degree, 'qualificationUA': app.qualificationUA,
             'qualificationEN': app.qualificationEN, 'fieldOfStudyUA': app.fieldOfStudyUA, 'fieldOfStudyEN': app.fieldOfStudyEN, 'firstSpecialtyUA': app.firstSpecialtyUA, 'firstSpecialtyEN': app.firstSpecialtyEN, 'educationalProgramUA': app.educationProgramUA, 'educationalProgramEN': app.educationProgramEN,
             'secondSpecialtyUA': app.secondSpecialtyUA, 'secondSpecialtyEN': app.secondSpecialtyEN, 'specializationUA': app.specializationUA, 'specializationEN': app.specializationEN}))
+        },
+        calculatePercentOfFullness: function (data) {
+            var countOfEmptyFields = 0;
+            Object.keys(data).forEach(function (value) {
+                if (data[value] === '') {
+                    countOfEmptyFields++;
+                }
+            });
+            var length = Object.keys(data).length;
+
+            return (length - countOfEmptyFields) / length;
         }
     }
 });

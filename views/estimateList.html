@@ -70,14 +70,29 @@
                 <tbody>
                 <tr v-for="entry in filteredHeroes" :ref="'graduate' + entry['id']">
 
+<!--                    <td v-for="key in columns">-->
+<!--&lt;!&ndash;                        <div :ref="'estimate' + entry[key]['id']">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div v-if="key === 'студент'">{{entry[key]}}</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div v-else v-for="(value, name, index) in entry[key]" >&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div v-if="name === 'mark'" contenteditable="true">{{ value }}</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div v-else-if="name !== 'id'">{{ value }}</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--                        <div :ref="'estimate' + entry[key]['id']">-->
+<!--                            <div contenteditable="true">{{entry[key]['mark']}}</div>-->
+<!--                            <div>{{entry[key]['ECTS']}}</div>-->
+<!--                            <div>{{entry[key]['national']}}</div>-->
+<!--&lt;!&ndash;                            <div v-else>{{marks}}</div>&ndash;&gt;-->
+<!--                        </div>-->
+<!--                    </td>-->
                     <td v-for="key in columns">
                         <div v-if="key === 'студент'">{{entry[key]}}</div>
-<!--                        <div v-else v-for="mark in marksColumns" style="text-align: center">-->
+                        <!--                        <div v-else v-for="mark in marksColumns" style="text-align: center">-->
                         <div v-else :ref="'estimate' + entry[key]['id']">
                             <div contenteditable="true">{{entry[key]['mark']}}</div>
-                            <div>{{entry[key]['ECTS']}}</div>
+                            <div>{{entry[key]["ECTS"]}}</div>
                             <div>{{entry[key]['national']}}</div>
-<!--                            <div v-else>{{marks}}</div>-->
+                            <!--                            <div v-else>{{marks}}</div>-->
                         </div>
                     </td>
 <!--                    <td style="min-width: 20px">-->
@@ -100,7 +115,8 @@
         <button class="standard-button" @click="redirect('contentsAndResults')">Зміст та результати</button>
         <button class="standard-button" @click="redirect('graduateList')">Список випускників</button>
         <button class="standard-button" @click="redirect('disciplineList')">Дисципліни</button>
-        <button class="standard-button" @click="redirect('estimateList')">Оцінок</button>
+        <button class="standard-button" @click="redirect('estimateList')">Оцінки</button>
+        <button class="standard-button" @click="getODT()">Сформувати додатки</button>
     </div>
 </script>
 <div id="app">
@@ -115,11 +131,25 @@
             </h3>
         </modal>
         <div class="content-container">
+            <modal v-if="showInfoEntryModal" @close="showInfoEntryModal = false" @execute="showInfoEntryModal = false">
+                <h3 slot="header">
+                    Відсоток заповненості
+                    <i class="fa fa-info-circle" v-tooltip.right-end="'Якщо оцінка 0 або -1, то студент не зараховується як заповнений'"></i>
+                </h3>
+                <h3 slot="body">
+                    Відсоток заповненості: {{percentOfFullness}}%<br/>
+
+                </h3>
+            </modal>
+
             <form id="search" class="search-field">
                 <span class="text-caption">Пошук </span>
                 <input class="input-box" name="query" v-model="searchQuery" autocomplete="off">
                 <i class="fa fa-info-circle" v-tooltip.right-end="'Пошук відбувається по всім значенням рядків та стовпців таблиці.'"></i>
             </form>
+            <div class="add-button-container">
+                <button class="add-button" @click="showInfoEntryModal = true">Відсоток заповненості</button>
+            </div>
 <!--            <div class="add-button-container">-->
 <!--                <button class="add-button" @click="addNewGraduate()">Додати нового студента</button>-->
 <!--            </div>-->

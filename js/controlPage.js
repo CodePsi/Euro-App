@@ -1,3 +1,14 @@
+Vue.component('modal', {
+    template: '#modal-template',
+    props: {
+        width: String
+    },
+    methods: {
+        getActiveID: function() {
+            return app.activeModalValue
+        }
+    }
+});
 var componentGrid = Vue.component('grid', {
     template: '#grid-template',
     props: {
@@ -10,10 +21,17 @@ var componentGrid = Vue.component('grid', {
         this.columns.forEach(function (key) {
             sortOrders[key] = 1
         });
+        sortOrders['порядковий номер'] = -1;
         return {
-            sortKey: '',
-            sortOrders: sortOrders
+            sortKey: 'порядковий номер',
+            sortOrders: sortOrders,
+            currentPage: 1,
+            pages: 1,
+            pagesArray: [],
+            countEntriesEachPage: 10
         }
+    },
+    created: function() {
     },
     computed: {
         filteredHeroes: function () {
@@ -50,6 +68,9 @@ var componentGrid = Vue.component('grid', {
         },
         editQualificationEntry: function (id) {
             window.location = "/euro_new/control-page/group/edit/"+id+"/qualification";
+        },
+        displayDeleteModalWindow: function (id) {
+            app.showDeleteEntryModal = true;
         }
     }
 });
@@ -59,17 +80,17 @@ var app = new Vue({
     data: {
 
         qualifications: [],
+        showDeleteEntryModal: false,
+        activeModalValue: 0,
         searchQuery: '',
-        gridColumns: ['id', 'date', 'abbreviation', 'qualificationUA'],
+        gridColumns: ['порядковий номер', 'дата створення', 'назва групи', 'назва кваліфікації'],
         gridData: [],
-        gridDataAll: [],
-        currentPage: 1,
-        pages: 1,
-        pagesArray: [],
-        countEntriesEachPage: 10
+        gridDataAll: []
     },
     created: function() {
         this.updateAllQualifications();
+        console.log(document.cookie);
+        console.log("TRWSDF")
     },
     methods: {
         updateAllQualifications: function () {
@@ -79,16 +100,19 @@ var app = new Vue({
                         var qualificationsJSON = JSON.parse(request.xmlHttpRequestInstance.responseText);
                         console.log(qualificationsJSON);
                         for (var i = 0; i < qualificationsJSON.length; i++) {
+                            var date = qualificationsJSON[i][6];
+                            // var separatedValues = date.split('.');
+                            // var newDate = new Date(separatedValues[]);
                             qualificationsJSON[i] = {
-                                'id': qualificationsJSON[i][0],
+                                'порядковий номер': parseInt(qualificationsJSON[i][0]),
                                 'qualificationEN': qualificationsJSON[i][1],
-                                'qualificationUA': qualificationsJSON[i][2],
+                                'назва кваліфікації': qualificationsJSON[i][2],
                                 'mainFieldStudyUA': qualificationsJSON[i][3],
                                 'mainFieldStudyEN': qualificationsJSON[i][4],
                                 'degree': qualificationsJSON[i][5],
-                                'date': qualificationsJSON[i][6],
+                                'дата створення': qualificationsJSON[i][6],
                                 'userId': qualificationsJSON[i][7],
-                                'abbreviation': qualificationsJSON[i][8],
+                                'назва групи': qualificationsJSON[i][8],
                                 'fieldStudyUA': qualificationsJSON[i][9],
                                 'fieldStudyEN': qualificationsJSON[i][10],
                                 'firstSpecialtyUA': qualificationsJSON[i][11],
@@ -102,7 +126,7 @@ var app = new Vue({
                             };
                         }
                         app.qualifications = qualificationsJSON;
-                        app.gridDataAll = qualificationsJSON;
+                        app.gridData = qualificationsJSON;
                         // console.log(app.gridDataAll);
                         app.setUpPagination();
                     }
@@ -119,45 +143,6 @@ var app = new Vue({
             };
 
             request.sendPOSTRequest("/euro_new/qualifications/", "");
-        },
-        setUpPagination: function () {
-            app.pages = Math.ceil(app.gridDataAll.length / app.countEntriesEachPage);
-            app.setPage(1);
-            app.gridData = app.gridDataAll.slice((app.currentPage - 1) * app.countEntriesEachPage, ((app.currentPage - 1) * app.countEntriesEachPage) + app.countEntriesEachPage);
-        },
-        setPage: function(page) {
-            if (page !== '..') { //Case when we don't need to change page because it is only decoration.
-                if (page !== undefined)
-                    app.currentPage = page;
-                if (app.pages > 4) {
-                    if (app.currentPage === app.pages) {
-                        app.pagesArray = [];
-                        app.pagesArray.push(1, '..', app.currentPage - 1, app.currentPage);
-                    } else if (app.currentPage === 1) {
-                        app.pagesArray = [];
-                        app.pagesArray.push(1, 2, '..', app.pages);
-                    } else if (app.currentPage >= app.pages - 2) {
-                        app.pagesArray = [];
-                        if (app.currentPage === app.pages - 2)
-                            app.pagesArray.push(1, '..', app.currentPage - 1, app.currentPage, app.currentPage + 1, app.pages);
-                        else
-                            app.pagesArray.push(1, '..', app.currentPage - 1, app.currentPage, app.currentPage + 1);
-                    } else {
-                        app.pagesArray = [];
-                        if (app.currentPage > 3)
-                            app.pagesArray.push(1, '..', app.currentPage - 1, app.currentPage, app.currentPage + 1, '..', app.pages);
-                        else if (app.currentPage === 3)
-                            app.pagesArray.push(1, app.currentPage - 1, app.currentPage, app.currentPage + 1, '..', app.pages);
-                        else
-                            app.pagesArray.push(app.currentPage - 1, app.currentPage, app.currentPage + 1, '..', app.pages);
-                    }
-                } else {
-                    app.pagesArray = [];
-                    for (var i = 1; i < app.pages + 1; i++)
-                        app.pagesArray.push(i);
-                }
-                app.gridData = app.gridDataAll.slice((app.currentPage - 1) * app.countEntriesEachPage, ((app.currentPage - 1) * app.countEntriesEachPage) + app.countEntriesEachPage);
-            }
         }
     }
 });

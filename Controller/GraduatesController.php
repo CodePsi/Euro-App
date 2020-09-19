@@ -5,6 +5,7 @@ namespace Euro\Controller;
 
 
 use Euro\Dao\GraduatesDao;
+use Euro\DBConnector;
 use Euro\Model\Graduates;
 use Euro\Model\IncorrectObjectTypeException;
 use Euro\Model\NotFoundItemException;
@@ -34,7 +35,7 @@ class GraduatesController
     {
         try {
             $dao = new GraduatesDao();
-            $entry = new Graduates(-1, $qualificationId, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+            $entry = new Graduates(-1, $qualificationId, '', '', '', '', date('Y-m-d'), '', '', '', '', '', '', '', '', date('Y-m-d', 0), date('Y-m-d', 0), 0, date('Y-m-d', 0), -1, '', '', '', '');
             echo $dao->save($entry);
         } catch (IncorrectObjectTypeException $e) {
             echo $e;

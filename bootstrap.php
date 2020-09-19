@@ -7,7 +7,7 @@
  *
  */
 
-use Euro\Json\JSON;
+use Euro\Response\ResponseDataReceiver;
 use Euro\Route\Router;
 
 require __DIR__ . "/../vendor/autoload.php";
@@ -15,7 +15,7 @@ require __DIR__ . "/../vendor/autoload.php";
 require "route.php";
 
 
-JSON::initializeJson();
+ResponseDataReceiver::initializeJson();
 session_start();
 $router = Router::createRouter();
 //include "Json/JSON.php";

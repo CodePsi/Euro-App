@@ -3,6 +3,21 @@ Vue.component('euro-header', {
     methods: {
         redirect: function(url) {
             window.location.href = url;
+        },
+        getODT: function() {
+            var win = window.open("/euro_new/printing/" + app.qualificationId + "/odt", '_blank');
+            win.focus();
+        }
+    }
+});
+Vue.component('modal', {
+    template: '#modal-template',
+    props: {
+        width: String
+    },
+    methods: {
+        getActiveID: function() {
+            return app.activeModalValue
         }
     }
 });
@@ -21,7 +36,9 @@ var app = new Vue({
         professionalStatusUA: '',
         professionalStatusEN: '',
         qualificationId: -1,
-        qualificationData: []
+        qualificationData: [],
+        percentOfFullness: 0,
+        showInfoEntryModal: false
     },
     created: function () {
         var pathname = window.location.pathname;
@@ -30,6 +47,7 @@ var app = new Vue({
         request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
             if (request.isRequestSuccessful()) {
                 var nationalFrameworkJSON = JSON.parse(request.xmlHttpRequestInstance.responseText);
+                app.percentOfFullness = Math.round(app.calculatePercentOfFullness(nationalFrameworkJSON) * 100);
                 app.levelOfQualificationUA = nationalFrameworkJSON.levelOfQualificationUA;
                 app.levelOfQualificationEN = nationalFrameworkJSON.levelOfQualificationEN;
                 app.officialDurationProgrammeUA = nationalFrameworkJSON.officialDurationProgrammeUA;
@@ -64,6 +82,17 @@ var app = new Vue({
 
             request.sendPUTRequest("/euro_new/nationalFrameworks/" + app.qualificationId, JSON.stringify({'levelOfQualificationUA': app.levelOfQualificationUA, 'levelOfQualificationEN': app.levelOfQualificationEN, 'officialDurationProgrammeUA': app.officialDurationProgrammeUA,
                 'officialDurationProgrammeEN': app.officialDurationProgrammeEN, 'accessRequirementsUA': app.accessRequirementsUA, 'accessRequirementsEN': app.accessRequirementsEN, 'accessFurtherStudyUA': app.accessFurtherStudyUA, 'accessFurtherStudyEN': app.accessFurtherStudyEN, 'professionalStatusUA': app.professionalStatusUA, 'professionalStatusEN': app.professionalStatusEN,}))
+        },
+        calculatePercentOfFullness: function (data) {
+            var countOfEmptyFields = 0;
+            Object.keys(data).forEach(function (value) {
+                if (data[value] === '') {
+                    countOfEmptyFields++;
+                }
+            });
+            var length = Object.keys(data).length;
+
+            return (length - countOfEmptyFields) / length;
         }
     }
 });

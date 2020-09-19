@@ -73,6 +73,7 @@ class GraduatesDao extends AbstractDao implements Dao, ModelConverter
                 $object -> getIssuedByEN()
             );
             $this -> connection -> execute_query($formatString);
+            echo DBConnector::getStatus();
             return $this -> connection -> getLastInsertedId();
         }
 
@@ -126,7 +127,7 @@ class GraduatesDao extends AbstractDao implements Dao, ModelConverter
                 $object -> getQualificationId(), $object -> getLastNameUA(), $object -> getLastNameEN(), $object -> getFirstNameUA(), $object -> getFirstNameEN(),
                 $object -> getBirthday(), $object -> getSerialOfDiploma(), $object -> getNumberOfDiploma(), $object -> getNumberAddition(),
                 $object -> getPrevDocumentUA(), $object -> getPrevDocumentEN(), $object -> getPrevSerialNumberAddition(), $object -> getDurationOfTrainingUA(),
-                $object -> getDurationOfTrainingEN(), $object -> getTrainingStart(), $object -> getTrainingEnd(), $object -> getActualNumberOfEstimates(),
+                $object -> getDurationOfTrainingEN(), $object -> getTrainingStart(), $object -> getTrainingEnd(), 0,
                 $object -> getDecisionDate(), $object -> getProtocolNum(), $object -> getQualificationAwardedUA(), $object -> getQualificationAwardedEN(), $object -> getIssuedBy(), $object -> getIssuedByEN(), $object -> getId());
             return $this -> connection -> execute_query($formatString);
         }

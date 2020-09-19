@@ -3,6 +3,21 @@ Vue.component('euro-header', {
     methods: {
         redirect: function(url) {
             window.location.href = url;
+        },
+        getODT: function() {
+            var win = window.open("/euro_new/printing/" + app.qualificationId + "/odt", '_blank');
+            win.focus();
+        }
+    }
+});
+Vue.component('modal', {
+    template: '#modal-template',
+    props: {
+        width: String
+    },
+    methods: {
+        getActiveID: function() {
+            return app.activeModalValue
         }
     }
 });
@@ -21,7 +36,9 @@ var app = new Vue({
         makingJudgmentsUA: '',
         makingJudgmentsEN: '',
         qualificationId: -1,
-        qualificationData: []
+        qualificationData: [],
+        percentOfFullness: 0,
+        showInfoEntryModal: false
     },
     created: function () {
         var pathname = window.location.pathname;
@@ -29,17 +46,18 @@ var app = new Vue({
         var request = new HttpRequest();
         request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
             if (request.isRequestSuccessful()) {
-                var nationalFrameworkJSON = JSON.parse(request.xmlHttpRequestInstance.responseText);
-                app.formOfStudyUA = nationalFrameworkJSON.formOfStudyUA;
-                app.formOfStudyEN = nationalFrameworkJSON.formOfStudyEN;
-                app.programSpecificationUA = nationalFrameworkJSON.programSpecificationUA;
-                app.programSpecificationEN = nationalFrameworkJSON.programSpecificationEN;
-                app.knowledgeUnderstandingUA = nationalFrameworkJSON.knowledgeUnderstandingUA;
-                app.knowledgeUnderstandingEN = nationalFrameworkJSON.knowledgeUnderstandingEN;
-                app.applicationKnowledgeUnderstandingUA = nationalFrameworkJSON.applicationKnowledgeUnderstandingUA;
-                app.applicationKnowledgeUnderstandingEN = nationalFrameworkJSON.applicationKnowledgeUnderstandingEN;
-                app.makingJudgmentsUA = nationalFrameworkJSON.makingJudgmentsUA;
-                app.makingJudgmentsEN = nationalFrameworkJSON.makingJudgmentsEN;
+                var contentsAndResultsJSON = JSON.parse(request.xmlHttpRequestInstance.responseText);
+                app.percentOfFullness = Math.round(app.calculatePercentOfFullness(contentsAndResultsJSON) * 100);
+                app.formOfStudyUA = contentsAndResultsJSON.formOfStudyUA;
+                app.formOfStudyEN = contentsAndResultsJSON.formOfStudyEN;
+                app.programSpecificationUA = contentsAndResultsJSON.programSpecificationUA;
+                app.programSpecificationEN = contentsAndResultsJSON.programSpecificationEN;
+                app.knowledgeUnderstandingUA = contentsAndResultsJSON.knowledgeUnderstandingUA;
+                app.knowledgeUnderstandingEN = contentsAndResultsJSON.knowledgeUnderstandingEN;
+                app.applicationKnowledgeUnderstandingUA = contentsAndResultsJSON.applicationKnowledgeUnderstandingUA;
+                app.applicationKnowledgeUnderstandingEN = contentsAndResultsJSON.applicationKnowledgeUnderstandingEN;
+                app.makingJudgmentsUA = contentsAndResultsJSON.makingJudgmentsUA;
+                app.makingJudgmentsEN = contentsAndResultsJSON.makingJudgmentsEN;
             }
         };
         request.sendGETRequest("/euro_new/contentsAndResults/" + this.qualificationId, "");
@@ -64,6 +82,17 @@ var app = new Vue({
 
             request.sendPUTRequest("/euro_new/contentsAndResults/" + app.qualificationId, JSON.stringify({'formOfStudyUA': app.formOfStudyUA, 'formOfStudyEN': app.formOfStudyEN, 'programSpecificationUA': app.programSpecificationUA,
                 'programSpecificationEN': app.programSpecificationEN, 'knowledgeUnderstandingUA': app.knowledgeUnderstandingUA, 'knowledgeUnderstandingEN': app.knowledgeUnderstandingEN, 'applicationKnowledgeUnderstandingUA': app.applicationKnowledgeUnderstandingUA, 'applicationKnowledgeUnderstandingEN': app.applicationKnowledgeUnderstandingEN, 'makingJudgmentsUA': app.makingJudgmentsUA, 'makingJudgmentsEN': app.makingJudgmentsEN}))
+        },
+        calculatePercentOfFullness: function (data) {
+            var countOfEmptyFields = 0;
+            Object.keys(data).forEach(function (value) {
+                if (data[value] === '') {
+                    countOfEmptyFields++;
+                }
+            });
+            var length = Object.keys(data).length;
+
+            return (length - countOfEmptyFields) / length;
         }
     }
 });

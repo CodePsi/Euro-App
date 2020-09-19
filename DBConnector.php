@@ -1,6 +1,8 @@
 <?php
 namespace Euro;
 
+use Euro\Response\JsonResponseBuilder;
+use Euro\Response\Response;
 use mysqli;
 use mysqli_result;
 
@@ -19,13 +21,21 @@ class DBConnector
 
 
     /**
-     * Wrapper for the @link mysqli::query() function.
+     * Improved wrapper for the @link mysqli::query() function.
      *
      * @param $query
      * @return bool|mysqli_result
      */
     public function execute_query($query) {
-        return self::$mysqli -> query($query);
+        $queryResult = self::$mysqli -> query($query);
+        if (self::isSqlErrorOccurred()) {
+            Response::json(JsonResponseBuilder::createResponse()
+                -> addNewJsonItem("error_message", "Sql error occurred: " . self::$mysqli -> error)
+                -> build());
+            return false;
+        }
+
+        return $queryResult;
     }
 
     public function close() {
@@ -37,7 +47,11 @@ class DBConnector
     }
 
     public static function getStatus() {
-        return empty(self::$mysqli -> error) ? "Success" : self::$mysqli -> error;
+        return self::isSqlErrorOccurred() ? "Success" : self::$mysqli -> error;
+    }
+
+    private static function isSqlErrorOccurred() {
+        return !empty(self::$mysqli -> error);
     }
 }
 

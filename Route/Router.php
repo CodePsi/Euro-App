@@ -5,7 +5,6 @@ namespace Euro\Route;
 
 
 use Closure;
-use Euro\Response\JSON;
 use Euro\Render\Render;
 use Euro\Response\ResponseDataReceiver;
 
@@ -81,8 +80,8 @@ class Router
         $urlSplit = explode('?', $uri);
         $args = '';
         $onlyUri = $urlSplit[0];
-
-        ResponseDataReceiver::initializeQueryParams($urlSplit[1]);
+        if (count($urlSplit) > 1)
+            ResponseDataReceiver::initializeQueryParams($urlSplit[1]);
 
 
 

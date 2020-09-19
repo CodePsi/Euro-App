@@ -8,6 +8,40 @@
     <script src="https://unpkg.com/vue"></script>
 </head>
 <body>
+<script type="text/x-template" id="modal-template">
+    <transition name="modal">
+        <div class="modal-mask">
+            <div class="modal-wrapper">
+                <div class="modal-container" v-bind:style="{width: width}">
+
+                    <div class="modal-header">
+                        <slot name="header">
+                            Header
+                        </slot>
+                    </div>
+
+                    <div class="modal-body">
+                        <slot name="body">
+                            Body
+                        </slot>
+                    </div>
+
+                    <div class="modal-footer">
+                        <slot name="footer">
+                            <button class="modal-default-button" @click="$emit('execute')">
+                                OK
+                            </button>
+                            <button class="modal-default-button" @click="$emit('close')">
+                                Close
+                            </button>
+
+                        </slot>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </transition>
+</script>
 <script type="text/x-template" id="euro-header">
     <div class="header-container">
         <button class="standard-button" @click="redirect('/euro_new/control-page')">Головна сторінка</button>
@@ -16,13 +50,26 @@
         <button class="standard-button" @click="redirect('contentsAndResults')">Зміст та результати</button>
         <button class="standard-button" @click="redirect('graduateList')">Список випускників</button>
         <button class="standard-button" @click="redirect('disciplineList')">Дисципліни</button>
-        <button class="standard-button" @click="redirect('estimateList')">Оцінок</button>
+        <button class="standard-button" @click="redirect('estimateList')">Оцінки</button>
+        <button class="standard-button" @click="getODT()">Сформувати додатки</button>
     </div>
 </script>
 <div id="app">
     <euro-header></euro-header>
     <div class="main-container">
         <div class="content-container">
+            <modal v-if="showInfoEntryModal" @close="showInfoEntryModal = false" @execute="showInfoEntryModal = false">
+                <h3 slot="header">
+                    Відсоток заповненості
+                </h3>
+                <h3 slot="body">
+                    Відсоток заповненості: {{percentOfFullness}}%<br/>
+
+                </h3>
+            </modal>
+            <div class="add-button-container">
+                <button class="add-button" @click="showInfoEntryModal = true">Відсоток заповненості</button>
+            </div>
             <label class="label-box">Форма навчання: <textarea v-model="formOfStudyUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
             <label class="label-box">Mode of study: <textarea v-model="formOfStudyEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
             <label class="label-box">Навчальний план: <textarea v-model="programSpecificationUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>

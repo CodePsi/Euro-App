@@ -14,8 +14,8 @@ class FileHandler
     private $fileType = '';
     private $zipArchive;
     private $fileDescriptor = null;
-    private $generalZipArchive = null;
-    private $zipFileName = '';
+    public $generalZipArchive = null;
+    public $zipFileName = '';
 
     public function __construct($degree)
     {
@@ -25,7 +25,7 @@ class FileHandler
             $this->fileType = self::MASTER_DEGREE_XML_FILE;
         }
         $this->generalZipArchive = new ZipArchive();
-        $this->zipFileName = time() . ".zip";
+        $this->zipFileName = realpath('documents') . '/' .  time() . ".zip";
         $this->generalZipArchive -> open($this->zipFileName, ZipArchive::CREATE);
 
     }
@@ -80,7 +80,7 @@ class FileHandler
         $zipArchive->addFile("content.xml");
 //        $this->zipArchive->addFile("styles.xml");
         $zipArchive->close();
-
+        $this -> generalZipArchive -> addFile(realpath('documents') . '/' . $filename, $filename);
 //        $this->generalZipArchive -> addFile("./test/" . $filename . ".odt", $filename . ".odt");
 
 

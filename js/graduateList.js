@@ -3,6 +3,10 @@ Vue.component('euro-header', {
     methods: {
         redirect: function(url) {
             window.location.href = url;
+        },
+        getODT: function() {
+            var win = window.open("/euro_new/printing/" + app.qualificationId + "/odt", '_blank');
+            win.focus();
         }
     }
 });
@@ -178,23 +182,26 @@ var app = new Vue({
         currentPage: 1,
         pages: 1,
         pagesArray: [],
-        countEntriesEachPage: 10
+        countEntriesEachPage: 10,
+        percentOfFullness: 0,
+        showInfoEntryModal: false
     },
     created: function() {
         var pathname = window.location.pathname;
         this.qualificationId = pathname.match(/\d+/)[0]; //Getting ID from URL (particularly from URI in this case)
         console.log(this.qualificationId);
         this.updateAllGraduates();
-
     },
     methods: {
         updateAllGraduates: function () {
             var request = new HttpRequest();
+            console.log("1234");
             request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
                 if (request.isRequestSuccessful()) {
                     // console.log(request.xmlHttpRequestInstance.responseText);
                     var graduatesJSON = JSON.parse(request.xmlHttpRequestInstance.responseText);
                     // console.log(graduatesJSON);
+                    app.percentOfFullness = Math.round(app.calculatePercentOfFullness(graduatesJSON) * 100);
                     for (var i = 0; i < graduatesJSON.length; i++) {
                         graduatesJSON[i] = {
                             'id': graduatesJSON[i][1],
@@ -247,7 +254,7 @@ var app = new Vue({
                     })
                 }
             };
-
+            console.log(this.qualificationId);
             request.sendPOSTRequest("/euro_new/graduates?qualificationId=" + this.qualificationId, "")
         },
         deleteGraduate: function () {
@@ -270,7 +277,8 @@ var app = new Vue({
             request.sendDELETERequest("/euro_new/graduates?id=" + this.activeModalValue, "")
         },
         updateAllEntries: function () {
-            var refs = this.$children[0].$refs; //Accessing to grid-template's refs via children component in parent component
+            var refs = this.$children[1].$refs; //Accessing to grid-template's refs via children component in parent component
+            console.log(refs);
             Object.keys(refs).forEach(function (value) {
                 if (value.startsWith("graduate")) {
                     var request = new HttpRequest();
@@ -285,7 +293,7 @@ var app = new Vue({
                         'firstNameUA': children[2].innerText,
                         'firstNameEN': children[3].innerText,
                         'birthday': children[4].innerText,
-                        'serialDiploma': children[5].innerText,
+                        'serialOfDiploma': children[5].innerText,
                         'numberOfDiploma': children[6].innerText,
                         'numberAddition': children[7].innerText,
                         'prevDocumentUA': children[8].innerText,
@@ -318,6 +326,20 @@ var app = new Vue({
                     request.sendPUTRequest("/euro_new/graduates", json);
                 }
             });
+        },
+        calculatePercentOfFullness: function (data) {
+            var countOfEmptyFields = 0;
+            for (var i = 0; i < data.length; i++) {
+                for (var j = 0; j < data[i].length; j++) {
+                    if (data[i][j] === "") {
+                        countOfEmptyFields++;
+                        break;
+                    }
+                }
+            }
+            var length = data.length;
+
+            return (length - countOfEmptyFields) / length;
         }
     }
 });

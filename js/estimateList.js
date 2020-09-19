@@ -3,6 +3,10 @@ Vue.component('euro-header', {
     methods: {
         redirect: function(url) {
             window.location.href = url;
+        },
+        getODT: function() {
+            var win = window.open("/euro_new/printing/" + app.qualificationId + "/odt", '_blank');
+            win.focus();
         }
     }
 });
@@ -72,7 +76,6 @@ var componentGrid = Vue.component('grid', {
             var refs = this.$refs;
             if (el.scrollTop > 0) {
                 Object.keys(this.$refs.header.children[0].children).forEach(function (value) {
-                    console.log(value);
                     refs.header.children[0].children[value].style.top = el.scrollTop + 'px';
                     refs.header.children[0].children[value].style.position = 'relative';
                     refs.header.children[0].children[value].style['z-index'] = '1';
@@ -108,6 +111,10 @@ var componentGrid = Vue.component('grid', {
                 });
 
             }
+        },
+        getValue: function (v) {
+            console.log(v["mark"]);
+            return "123";
         }
     }
 });
@@ -120,6 +127,7 @@ var app = new Vue({
         return {
             activeModalValue: -1,
             showDeleteEntryModal: false,
+            showInfoEntryModal: false,
             searchQuery: '',
             gridColumns: ['студент'],
             gridData: [],
@@ -130,6 +138,7 @@ var app = new Vue({
             pagesArray: [],
             countEntriesEachPage: 10,
             disciplines:  [],
+            percentOfFullness: 0
         }
     },
     created: function() {
@@ -138,9 +147,6 @@ var app = new Vue({
         // this.dddas.push(1);
         this.setUpAllGraduates();
         this.setUpAllDisciplines();
-        this.gridData = this.gridData.sort(function (a, b) { a = a['студент'];
-            b = b['студент'];
-            return (a === b ? 0 : a > b ? 1 : -1)})
     },
     methods: {
         setUpAllEstimates: function () {
@@ -153,6 +159,7 @@ var app = new Vue({
                     request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
                         if (request.isRequestSuccessful()) {
                             var json = JSON.parse(request.xmlHttpRequestInstance.responseText);
+                            console.log(json);
                             var gridDataJson = {'id': graduates[i]['id'], 'студент': graduates[i]['прізвище']};
                             for (var j = 0; j < json.length; j++) {
                                 var discipline = disciplines.filter(function (value) {
@@ -160,9 +167,16 @@ var app = new Vue({
                                 });
                                 var mark = json[j][2] !== '' ? parseInt(json[j][2]) : -1;
                                 var ects = app.convertToECTS(mark);
-                                var national = app.getNationalGrade(mark, discipline[0].differential);
-                                console.log(discipline[0].nameOfDiscipline);
-                                gridDataJson[discipline[0].nameOfDiscipline] = {'id': json[j][5], 'mark': mark, 'ECTS': ects, 'national': national};
+                                if (discipline[0] !== undefined) {
+                                    var national = app.getNationalGrade(mark, discipline[0].differential);
+                                    console.log(discipline[0].nameOfDiscipline);
+                                    gridDataJson[discipline[0].nameOfDiscipline] = {
+                                        'id': json[j][5],
+                                        'mark': mark,
+                                        'ECTS': ects,
+                                        'national': national
+                                    };
+                                }
                             }
                             app.gridData.push(gridDataJson);
                                 app.gridData = app.gridData.sort(function (a, b) {
@@ -170,7 +184,7 @@ var app = new Vue({
                                     b = b['студент'];
                                     return (a === b ? 0 : a > b ? 1 : -1)
                                 });
-
+                            app.percentOfFullness = Math.round(app.calculatePercentOfFullness(app.gridData) * 100);
                         }
                     };
                 })(i);
@@ -222,7 +236,7 @@ var app = new Vue({
             request.sendDELETERequest("/euro_new/graduates?id=" + this.activeModalValue, "")
         },
         updateAllEntries: function () {
-            var refs = this.$children[0].$refs; //Accessing to grid-template's refs via children component in parent component
+            var refs = this.$children[1].$refs; //Accessing to grid-template's refs via children component in parent component
             console.log(refs);
             var i = 0;
             Object.keys(refs).forEach(function (value) {
@@ -356,6 +370,23 @@ var app = new Vue({
                     return 'Зараховано/Passed';
                 }
             }
+        },
+        calculatePercentOfFullness: function (data) {
+            var countOfEmptyFields = 0;
+            for (var i = 0; i < data.length; i++) {
+                Object.keys(data[i]).some(function (value) {
+                    // console.log(data[i][value]['mark']);
+                    if (data[i][value]['mark'] <= 0) {
+                        // console.log('ts')
+                        countOfEmptyFields++;
+                    }
+                    return data[i][value]['mark'] < 0;
+                });
+            }
+            var length = data.length;
+            // console.log(length)
+            // console.log(countOfEmptyFields)
+            return (length - countOfEmptyFields) / length;
         }
     }
 });

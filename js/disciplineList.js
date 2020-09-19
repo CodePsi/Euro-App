@@ -3,6 +3,10 @@ Vue.component('euro-header', {
     methods: {
         redirect: function(url) {
             window.location.href = url;
+        },
+        getODT: function() {
+            var win = window.open("/euro_new/printing/" + app.qualificationId + "/odt", '_blank');
+            win.focus();
         }
     }
 });
@@ -135,6 +139,7 @@ var app = new Vue({
         activeModalValue: -1,
         showDeleteEntryModal: false,
         showInfoEntryModal: false,
+        showInfoAboutTableEntryModal: false,
         searchQuery: '',
         gridColumns: ['назва дисципліни', 'Course title in English', 'кредити', 'години', 'навчання', 'диференціал'],
         gridData: [],
@@ -146,7 +151,8 @@ var app = new Vue({
         countEntriesEachPage: 10,
         totalHours: 0,
         totalLoans: 0,
-        amountOfDisciplines: 0
+        amountOfDisciplines: 0,
+        percentOfFullness: 0
 
 },
     created: function() {
@@ -180,6 +186,7 @@ var app = new Vue({
                         };
                     }
                     console.log(disciplinesJSON);
+                    app.percentOfFullness = Math.round(app.calculatePercentOfFullness(disciplinesJSON) * 100);
                     app.qualifications = disciplinesJSON;
                     app.gridData = disciplinesJSON;
                     console.log(app.$refs);
@@ -226,7 +233,7 @@ var app = new Vue({
             request.sendDELETERequest("/euro_new/disciplines?id=" + this.activeModalValue, "")
         },
         updateAllDisciplines: function () {
-            var refs = this.$children[0].$refs; //Accessing to grid-template's refs via children component in parent component
+            var refs = this.$children[1].$refs; //Accessing to grid-template's refs via children component in parent component
             console.log(refs);
             Object.keys(refs).forEach(function (value) {
                 if (value.startsWith("discipline")) {
@@ -269,6 +276,20 @@ var app = new Vue({
             } else { //Otherwise vice verse
                 return value.innerText.charAt(0);
             }
+        },
+        calculatePercentOfFullness: function (data) {
+            var countOfEmptyFields = 0;
+            for (var i = 0; i < data.length; i++) {
+                for (var j = 0; j < data[i].length; j++) {
+                    if (data[i][j] === "") {
+                        countOfEmptyFields++;
+                        break;
+                    }
+                }
+            }
+            var length = data.length;
+
+            return (length - countOfEmptyFields) / length;
         }
     }
 });
