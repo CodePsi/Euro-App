@@ -18,6 +18,7 @@ class NationalFrameworkController
             $dao = new NationalFrameworkDao();
             echo $dao->get($id)->toJson();
         } catch (NotFoundItemException $e) {
+            echo $e;
         }
     }
 

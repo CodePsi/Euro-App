@@ -4,7 +4,7 @@
 namespace Euro\Dao;
 
 
-use Euro\DBConnector;
+use Euro\Database\DBConnector;
 use Euro\Model\IncorrectObjectTypeException;
 use Euro\Model\NotFoundItemException;
 use Euro\Model\Qualification;
@@ -81,7 +81,7 @@ class QualificationDao extends AbstractDao implements Dao, ModelConverter
     public function delete(int $id): void
     {
         $stockItem = $this -> connection -> execute_query("DELETE FROM Qualification WHERE Qualification_ID=$id");
-        if (!$stockItem || $stockItem -> num_rows === 0) {
+        if (!$stockItem) {
             throw new NotFoundItemException("Not found item. Error: " . DBConnector::$mysqli -> error);
         }
     }
@@ -117,7 +117,11 @@ class QualificationDao extends AbstractDao implements Dao, ModelConverter
                 $object -> getDate(), $object -> getUserId(), $object -> getAbbreviation(), $object -> getFieldStudyUA(), $object -> getFieldStudyEN(), $object -> getFirstSpecialtyUA(),
                 $object -> getFirstSpecialtyEN(), $object -> getSecondSpecialtyUA(), $object -> getSecondSpecialtyEN(), $object -> getSpecializationUA(), $object -> getSpecializationEN(),
                 $object -> getEducationalProgramUA(), $object -> getEducationalProgramEN(), $object -> getId());
-            return $this -> connection -> execute_query($formatString);
+            echo $formatString;
+            $this -> connection -> execute_query($formatString);
+
+            var_dump($object);
+            return true;
         }
 
         throw new IncorrectObjectTypeException("Passed object's type is not Qualification");

@@ -5,7 +5,7 @@ namespace Euro\Controller;
 
 
 use Euro\Dao\EstimatesDao;
-use Euro\DBConnector;
+use Euro\Database\DBConnector;
 use Euro\Model\IncorrectObjectTypeException;
 use Euro\Model\NotFoundItemException;
 
@@ -36,4 +36,9 @@ class EstimateController
         } catch (IncorrectObjectTypeException $e) {
         }
     }
+
+    public static function getEstimatesByQualificationId($qualificationId) {
+
+    }
+
 }

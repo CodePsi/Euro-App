@@ -28,6 +28,7 @@ class Route
     public $parameterNames = [];
 
     private $action;
+    private $controller = [];
 
     private $router;
 
@@ -116,6 +117,24 @@ class Route
     {
         $this->regexUri = $regexUri;
     }
+
+    /**
+     * @return array
+     */
+    public function getController(): array
+    {
+        return $this->controller;
+    }
+
+    /**
+     * @param mixed $controller
+     */
+    public function setController(array $controller): void
+    {
+        $this->controller = $controller;
+    }
+
+
 
     public function call() {
         return $this->getAction()->call($this, ...$this->getParameters());

@@ -4,7 +4,7 @@
 namespace Euro\Dao;
 
 
-use Euro\DBConnector;
+use Euro\Database\DBConnector;
 use Euro\Model\ContentsAndResults;
 use Euro\Model\IncorrectObjectTypeException;
 use Euro\Model\NotFoundItemException;
@@ -47,7 +47,8 @@ class ContentsAndResultsDao extends AbstractDao implements Dao, ModelConverter
                                  Program_Specification_UA, Program_Specification_EN, Knowledge_undestanding_UA, Knowledge_undestanding_EN, 
                                  Application_knowledge_understanding_UA, Application_knowledge_understanding_EN, Making_judgments_UA, 
                                  Making_judgments_EN) 
-                VALUES (DEFAULT, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
+                VALUES (%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
+                $object -> getQualificationId(),
                 $object -> getFormStudyUA(),
                 $object -> getFormStudyEN(),
                 $object -> getProgramSpecificationUA(),
@@ -97,7 +98,7 @@ class ContentsAndResultsDao extends AbstractDao implements Dao, ModelConverter
                      Application_knowledge_understanding_EN = '%s',
                      Making_judgments_UA = '%s',
                      Making_judgments_EN = '%s' WHERE Qualification_ID=%d",
-                $object -> getFormStudyUA(), $object -> getFormStudyEN(), $object -> getProgramSpecificationUA(), $object -> getProgramSpecificationUA(),
+                $object -> getFormStudyUA(), $object -> getFormStudyEN(), $object -> getProgramSpecificationUA(), $object -> getProgramSpecificationEN(),
                 $object -> getKnowledgeUnderstandingUA(), $object -> getKnowledgeUnderstandingEN(), $object -> getApplicationKnowledgeUnderstandingUA(),
                 $object -> getApplicationKnowledgeUnderstandingEN(), $object -> getMakingJudgmentsUA(), $object -> getMakingJudgmentsEN(), $object -> getQualificationId());
             return $this -> connection -> execute_query($formatString);

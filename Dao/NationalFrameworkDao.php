@@ -4,7 +4,7 @@
 namespace Euro\Dao;
 
 
-use Euro\DBConnector;
+use Euro\Database\DBConnector;
 use Euro\Model\IncorrectObjectTypeException;
 use Euro\Model\NationalFramework;
 use Euro\Model\NotFoundItemException;
@@ -49,8 +49,8 @@ class NationalFrameworkDao extends AbstractDao implements Dao, ModelConverter
                                Professional_status_UA, Professional_status_EN)
                 VALUES (%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
                 $object -> getQualificationId(),
-                $object -> getLevelQualificationUA(),
-                $object -> getLevelQualificationEN(),
+                $object -> getLevelOfQualificationUA(),
+                $object -> getLevelOfQualificationEN(),
                 $object -> getOfficialDurationProgrammerUA(),
                 $object -> getOfficialDurationProgrammerEN(),
                 $object -> getAccessRequirementsUA(),

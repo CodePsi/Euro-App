@@ -47,7 +47,7 @@
         <button class="standard-button" @click="redirect('/euro_new/control-page')">Головна сторінка</button>
         <button class="standard-button" @click="redirect('qualification')">Здобуття кваліфікації</button>
         <button class="standard-button" @click="redirect('nationalFramework ')">Національна рамка</button>
-        <button class="standard-button" @click="redirect('contentsAndResults')">Зміст та результати</button>
+        <button class="standard-button selected-header-button" @click="redirect('contentsAndResults')">Зміст та результати</button>
         <button class="standard-button" @click="redirect('graduateList')">Список випускників</button>
         <button class="standard-button" @click="redirect('disciplineList')">Дисципліни</button>
         <button class="standard-button" @click="redirect('estimateList')">Оцінки</button>
@@ -77,7 +77,7 @@
             <label class="label-box">Знання і розуміння: <textarea v-model="knowledgeUnderstandingUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
             <label class="label-box">Knowledge and understanding: <textarea v-model="knowledgeUnderstandingEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
             <label class="label-box">Застосування знань і розумінь: <textarea v-model="applicationKnowledgeUnderstandingUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
-            <label class="label-box">Applying knowledge and understanding: <textarea v-model="applicationKnowledgeUnderstandingUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+            <label class="label-box">Applying knowledge and understanding: <textarea v-model="applicationKnowledgeUnderstandingEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
             <label class="label-box">Формування суджень: <textarea v-model="makingJudgmentsUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
             <label class="label-box">Making judgments: <textarea v-model="makingJudgmentsEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
             <div class="submit-button-container">

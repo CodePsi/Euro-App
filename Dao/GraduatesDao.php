@@ -4,7 +4,7 @@
 namespace Euro\Dao;
 
 
-use Euro\DBConnector;
+use Euro\Database\DBConnector;
 use Euro\Model\Graduates;
 use Euro\Model\IncorrectObjectTypeException;
 use Euro\Model\NotFoundItemException;

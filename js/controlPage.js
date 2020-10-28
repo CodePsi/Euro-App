@@ -71,6 +71,7 @@ var componentGrid = Vue.component('grid', {
         },
         displayDeleteModalWindow: function (id) {
             app.showDeleteEntryModal = true;
+            app.activeModalValue = id;
         }
     }
 });
@@ -85,12 +86,13 @@ var app = new Vue({
         searchQuery: '',
         gridColumns: ['порядковий номер', 'дата створення', 'назва групи', 'назва кваліфікації'],
         gridData: [],
-        gridDataAll: []
+        gridDataAll: [],
+        username: '',
+        isAdmin: false
     },
-    created: function() {
+    mounted: function() {
         this.updateAllQualifications();
-        console.log(document.cookie);
-        console.log("TRWSDF")
+         this.getActiveUser();
     },
     methods: {
         updateAllQualifications: function () {
@@ -143,6 +145,73 @@ var app = new Vue({
             };
 
             request.sendPOSTRequest("/euro_new/qualifications/", "");
+        },
+        deleteQualification: function () {
+
+            var request = new HttpRequest();
+            request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
+                if (request.isRequestSuccessful()) {
+                    var responseText = request.xmlHttpRequestInstance.responseText;
+                    console.log(responseText);
+                    app.showDeleteEntryModal = false;
+                    app.updateAllQualifications();
+                    if (responseText === "") {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Запис успішно видалено',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Упссс...',
+                            text: 'Щось пішло не так!',
+                            footer: '<a href>Повідомити адміністратору про помилку</a>'
+                        })
+                    }
+
+                }
+            }
+
+            request.sendDELETERequest("/euro_new/qualifications/" + this.activeModalValue);
+        },
+        getActiveUser: function () {
+            var cookies = document.cookie.split(';');
+            var token = "";
+            for (var i = 0; i < cookies.length; i++) {
+                var tempCookie = cookies[i].split('=');
+                if (tempCookie[0] === "PHPSESSID") {
+                    token = tempCookie[1];
+                    break;
+                }
+            }
+
+            var request = new HttpRequest();
+
+            request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
+                if (request.isRequestSuccessful()) {
+                    var json = JSON.parse(request.xmlHttpRequestInstance.responseText);
+                    app.isAdmin = json["is_admin"] === "1";
+                    app.test();
+                }
+            };
+
+            request.sendGETRequest("/euro_new/users?token=" + token, "")
+        },
+        test: function () {
+            if (this.isAdmin) {
+                console.log("TEst");
+                Swal.fire({
+                    title: 'Щось сталось ;)',
+                    width: 600,
+                    padding: '3em',
+                    background: '#fff url(https://sweetalert2.github.io/images/trees.png)',
+                    backdrop: 'rgba(0,0,123,0.4) url("views/images/nyan-cat.gif") left top no-repeat'
+                })
+            }
         }
     }
 });

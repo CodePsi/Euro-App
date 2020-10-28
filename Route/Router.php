@@ -40,29 +40,35 @@ class Router
         return self::$instance;
     }
 
-    public function setRoute($uri, Closure $action) {
+    public function setRoute($uri, $action) {
 //        $this->routes -> add(self::createRoute('GET', self::convertUriWithParametersToRegex($uri), $action));
         $this->get($uri, $action);
+        return $this;
     }
 
-    public function get(string $uri, Closure $action) {
+    public function get(string $uri, $action) {
         $this->routes -> add(self::createRoute('GET', $uri, $action));
+        return $this;
     }
 
-    public function post(string $uri, Closure $action) {
+    public function post(string $uri, $action) {
         $this->routes -> add(self::createRoute('POST', $uri, $action));
+        return $this;
     }
 
-    public function put(string $uri, Closure $action) {
+    public function put(string $uri, $action) {
         $this->routes -> add(self::createRoute('PUT', $uri, $action));
+        return $this;
     }
 
-    public function patch(string $uri, Closure $action) {
+    public function patch(string $uri, $action) {
         $this->routes -> add(self::createRoute('PATCH', $uri, $action));
+        return $this;
     }
 
-    public function delete(string $uri, Closure $action) {
+    public function delete(string $uri, $action) {
         $this->routes -> add(self::createRoute('DELETE', $uri, $action));
+        return $this;
     }
 
     public function beforeEach(Closure $action) {
@@ -82,8 +88,6 @@ class Router
         $onlyUri = $urlSplit[0];
         if (count($urlSplit) > 1)
             ResponseDataReceiver::initializeQueryParams($urlSplit[1]);
-
-
 
         $routes = self::$instance -> routes -> getRoutesByUri($onlyUri);
         foreach ($routes as $route) {

@@ -60,7 +60,7 @@ var app = new Vue({
                 app.professionalStatusEN = nationalFrameworkJSON.professionalStatusEN;
             }
         };
-        request.sendGETRequest("/euro_new/nationalFrameworks/" + this.qualificationId, "");
+            request.sendGETRequest("/euro_new/nationalFrameworks/" + this.qualificationId, "");
     },
     methods: {
         getNationalFramework: function () {

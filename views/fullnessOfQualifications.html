@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/euro_new/js/HttpRequest.js"></script>
+    <link href="/euro_new/css/style.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+</head>
+<body>
+
+<script type="text/x-template" id="loader">
+    <transition name="modal">
+        <div class="modal-mask">
+            <div class="modal-wrapper loader-container">
+                <div class="loader loader-1"></div>
+                <div style="color: white; font-size: 20px;">
+                    Please, wait for loading
+                </div>
+            </div>
+        </div>
+    </transition>
+</script>
+<script type="text/x-template" id="grid-template">
+    <div class="scrollable-table">
+        <table>
+            <thead>
+            <tr>
+                <th v-for="key in columns"
+                    @click="sortBy(key)"
+                    :class="{ active: sortKey == key }">
+                    {{ key | capitalize }}
+                    <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+                  </span>
+                </th>
+                <th style="min-width: 20px"></th>
+                <th style="min-width: 20px"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="entry in filteredHeroes">
+                <td v-for="key in columns">
+                    {{entry[key]}}
+                </td>
+<!--                <td style="min-width: 20px">-->
+<!--                    &lt;!&ndash;                    <button :value="entry['id']" @click="displayEditRequestModalWindow(entry['id'])">E</button>&ndash;&gt;-->
+<!--                    <input :value="entry['id']" @click="editQualificationEntry(entry['порядковий номер'])" type="image" src="/euro_new/views/images/editIcon.jpg" style="max-width: 20px">-->
+<!--                </td>-->
+<!--                <td style="min-width: 20px">-->
+<!--                    <input :value="entry['id']" @click="displayDeleteModalWindow(entry['порядковий номер'])" type="image" src="/euro_new/views/images/deleteIcon.png" style="max-width: 20px">-->
+<!--                </td>-->
+            </tr>
+            </tbody>
+        </table>
+        <!--        <div class="table-pagination">-->
+        <!--            <button class="standard-button" v-for="page in pagesArray" @click="setPage(page)">{{page}}</button>-->
+        <!--        </div>-->
+    </div>
+</script>
+    <div id="app">
+        <loader v-if="showLoader"></loader>
+        <div class="main-container">
+            <div class="content-container">
+                <form id="search" class="search-field">
+                    <span class="text-caption">Пошук </span><input class="input-box" name="query" v-model="searchQuery" autocomplete="off">
+                </form>
+                <div class="add-button-container">
+                </div>
+                <grid
+                        :heroes="gridData"
+                        :columns="gridColumns"
+                        :filter-key="searchQuery">
+                </grid>
+
+            </div>
+        </div>
+    </div>
+<script src="/euro_new/js/fullnessOfQualifications.js"></script>
+</body>
+</html>

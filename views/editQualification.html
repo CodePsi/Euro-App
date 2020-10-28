@@ -47,7 +47,7 @@
     <script type="text/x-template" id="euro-header">
         <div class="header-container">
             <button class="standard-button" @click="redirect('/euro_new/control-page')">Головна сторінка</button>
-            <button class="standard-button" @click="redirect('qualification')">Здобуття кваліфікації</button>
+            <button class="standard-button selected-header-button" @click="redirect('qualification')">Здобуття кваліфікації</button>
             <button class="standard-button" @click="redirect('nationalFramework ')">Національна рамка</button>
             <button class="standard-button" @click="redirect('contentsAndResults')">Зміст та результати</button>
             <button class="standard-button" @click="redirect('graduateList')">Список випускників</button>
@@ -79,12 +79,12 @@
                 </select></label>
                 <label class="label-box">Кваліфікація: <textarea v-model="qualificationUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
                 <label class="label-box">Qualification: <textarea v-model="qualificationEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
-                <label class="label-box">Галузь знань: <textarea v-model="fieldOfStudyUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
-                <label class="label-box">Field of study: <textarea v-model="fieldOfStudyEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+                <label class="label-box">Галузь знань: <textarea v-model="fieldStudyUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+                <label class="label-box">Field of study: <textarea v-model="fieldStudyEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
                 <label class="label-box">Перша спеціальність: <textarea v-model="firstSpecialtyUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
                 <label class="label-box">First Specialty: <textarea v-model="firstSpecialtyEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
                 <label class="label-box">Освітня програма: <textarea v-model="educationProgramUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
-                <label class="label-box">Educational program: <textarea v-model="educationProgramUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
+                <label class="label-box">Educational program: <textarea v-model="educationProgramEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
                 <label class="label-box">Друга спеціальність: <textarea v-model="secondSpecialtyUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>
                 <label class="label-box">Second Specialty: <textarea v-model="secondSpecialtyEN" class="textarea-box" placeholder="..." rows="3"></textarea></label>
                 <label class="label-box">Спеціалізація: <textarea v-model="specializationUA" class="textarea-box" placeholder="..." rows="3"></textarea></label>

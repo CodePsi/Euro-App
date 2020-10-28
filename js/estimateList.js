@@ -138,10 +138,13 @@ var app = new Vue({
             pagesArray: [],
             countEntriesEachPage: 10,
             disciplines:  [],
-            percentOfFullness: 0
+            graduates:  [],
+            percentOfFullness: 0,
+            maxLimitOfGraduatesReloads: 10,
+            countOfReloads: 0
         }
     },
-    created: function() {
+    mounted: function() {
         var pathname = window.location.pathname;
         this.qualificationId = pathname.match(/\d+/)[0]; //Getting ID from URL (particularly from URI in this case)
         // this.dddas.push(1);
@@ -152,47 +155,58 @@ var app = new Vue({
         setUpAllEstimates: function () {
             var graduates = this.graduates;
             var disciplines = this.disciplines;
-            for (var i = 0; i < this.graduates.length; i++) {
-                console.log();
-                const request = new HttpRequest();
-                (function (i) {
-                    request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
-                        if (request.isRequestSuccessful()) {
-                            var json = JSON.parse(request.xmlHttpRequestInstance.responseText);
-                            console.log(json);
-                            var gridDataJson = {'id': graduates[i]['id'], 'студент': graduates[i]['прізвище']};
-                            for (var j = 0; j < json.length; j++) {
-                                var discipline = disciplines.filter(function (value) {
-                                    return value.id === json[j][1];
-                                });
-                                var mark = json[j][2] !== '' ? parseInt(json[j][2]) : -1;
-                                var ects = app.convertToECTS(mark);
-                                if (discipline[0] !== undefined) {
-                                    var national = app.getNationalGrade(mark, discipline[0].differential);
-                                    console.log(discipline[0].nameOfDiscipline);
-                                    gridDataJson[discipline[0].nameOfDiscipline] = {
-                                        'id': json[j][5],
-                                        'mark': mark,
-                                        'ECTS': ects,
-                                        'national': national
-                                    };
+            if (app.countOfReloads > app.maxLimitOfGraduatesReloads) {
+                console.error("Api is not responding or there're no data to display!");
+            }
+            if ((app.graduates === undefined || graduates.length === 0) && app.countOfReloads <= app.maxLimitOfGraduatesReloads) {
+                console.warn("Error occurred. Graduates were not loaded correctly. Trying to fix this...")
+                app.disciplines = [];
+                app.graduates = [];
+                // app.gridColumns = ['студент'];
+                app.countOfReloads++;
+                app.$mount();
+            } else {
+                for (var i = 0; i < graduates.length; i++) {
+                    const request = new HttpRequest();
+                    (function (i) {
+                        request.xmlHttpRequestInstance.onreadystatechange = function (ev) {
+                            if (request.isRequestSuccessful()) {
+                                var json = JSON.parse(request.xmlHttpRequestInstance.responseText);
+                                console.log(json);
+                                var gridDataJson = {'id': graduates[i]['id'], 'студент': graduates[i]['прізвище']};
+                                for (var j = 0; j < json.length; j++) {
+                                    var discipline = disciplines.filter(function (value) {
+                                        return value.id === json[j][1];
+                                    });
+                                    var mark = json[j][2] !== '' ? parseInt(json[j][2]) : -1;
+                                    var ects = app.convertToECTS(mark);
+                                    if (discipline[0] !== undefined) {
+                                        var national = app.getNationalGrade(mark, discipline[0].differential);
+                                        console.log(discipline[0].nameOfDiscipline);
+                                        gridDataJson[discipline[0].nameOfDiscipline] = {
+                                            'id': json[j][5],
+                                            'mark': mark,
+                                            'ECTS': ects,
+                                            'national': national
+                                        };
+                                    }
                                 }
-                            }
-                            app.gridData.push(gridDataJson);
+                                app.gridData.push(gridDataJson);
                                 app.gridData = app.gridData.sort(function (a, b) {
                                     a = a['студент'];
                                     b = b['студент'];
                                     return (a === b ? 0 : a > b ? 1 : -1)
                                 });
-                            app.percentOfFullness = Math.round(app.calculatePercentOfFullness(app.gridData) * 100);
-                        }
-                    };
-                })(i);
+                                app.percentOfFullness = Math.round(app.calculatePercentOfFullness(app.gridData) * 100);
+                            }
+                        };
+                    })(i);
 
-                request.sendGETRequest("/euro_new/estimates?graduateId=" + this.graduates[i].id, "");
+                    request.sendGETRequest("/euro_new/estimates?graduateId=" + this.graduates[i].id, "");
+                }
+
+                console.log('done');
             }
-
-            console.log('done');
 
         },
         addNewGraduate: function () {

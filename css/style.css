@@ -425,6 +425,8 @@ table {
     transform: scale(1.08);
 }
 
+
+
 .search-field {
     /*margin-left: 200px;*/
     margin: 15px 0 25px 0;
@@ -770,5 +772,159 @@ table {
     align-items: center;
     background: linear-gradient(to bottom, #9fafde, #a6acdd, #b2a8dc, #b9a5db, #c1a1da);
     flex-flow: column wrap;
+}
+
+.selected-header-button {
+    background-color: powderblue;
+    color: black;
+}
+
+tr:hover {
+    /*opacity: 0.5;*/
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+tr:hover td { background-color: lightsteelblue; color: black; }
+
+
+
+
+
+.loader {
+    position: relative;
+    display: inline-block;
+    margin: 0 12.5% 100px;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #0cf;
+    border-radius: 50%;
+
+    animation: spin 0.75s infinite linear;
+}
+.loader::before,
+.loader::after {
+    left: -2px;
+    top: -2px;
+    display: none;
+    position: absolute;
+    content: '';
+    width: inherit;
+    height: inherit;
+    border: inherit;
+    border-radius: inherit;
+}
+
+
+/*
+ * LOADER 1
+ */
+.loader-1 {
+    border-top-width: 0;
+}
+
+
+/*
+ * LOADER 2
+ */
+.loader-2 {
+    border-top-color: transparent;
+}
+.loader-2::after {
+    display: block;
+    left: -2px;
+    top: -2px;
+    border: inherit;
+    transform: rotate(65deg);
+}
+
+
+/*
+ * LOADER 3
+ */
+.loader-3,
+.loader-3::before,
+.loader-3::after {
+    display: inline-block;
+    border-color: transparent;
+    border-top-color: #0cf;
+    animation-duration: 1.2s;
+}
+.loader-3::before {
+    transform: rotate(120deg);
+}
+.loader-3::after {
+    transform: rotate(240deg);
+}
+
+/*
+ * LOADER 4
+ */
+.loader-4 {
+    border-top-color: transparent;
+}
+.loader-4::after {
+    display: block;
+    border-color: transparent;
+    border-top-color: #0cf;
+    animation: spin 1.25s infinite linear reverse;
+}
+
+
+/*
+ * LOADER 5
+ */
+.loader-5,
+.loader-5::before {
+    display: inline-block;
+    border-color: transparent;
+    border-top-color: #0cf;
+}
+.loader-5::before {
+    animation: spin 1.5s infinite ease;
+}
+
+
+/*
+ * LOADER 6
+ */
+.loader-6 {
+    border-color: transparent;
+    border-top-color: #0cf;
+    animation-duration: 5s;
+}
+.loader-6::after {
+    display: block;
+    border-color: transparent;
+    border-top-color: #0cf;
+    animation: spin 0.75s infinite ease-in-out alternate;
+}
+
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.hide {
+    display: none;
+}
+
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: 300px;
 }
 

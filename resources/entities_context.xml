@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="scheme/entities_scheme.xsd">
+    <entity namespace="1"/>
+    <entity namespace="2"/>
+    <entity namespace="3"/>
+    <entity namespace="4"/>
+</entities>

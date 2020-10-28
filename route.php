@@ -7,6 +7,7 @@ use Euro\Controller\GraduatesController;
 use Euro\Controller\NationalFrameworkController;
 use Euro\Controller\PrintingController;
 use Euro\Controller\QualificationController;
+use Euro\Controller\UserController;
 use Euro\Facades\Route;
 
 use Euro\Render\View;
@@ -26,6 +27,8 @@ Route::beforeEach(function (\Euro\Route\Route $to) {
         Redirect::redirect('/euro_new/login');
     }
     return $to -> call();
+
+
 });
 
 Route::setRoute("/errorPage", function () {
@@ -64,6 +67,10 @@ Route::setRoute("/euro_new/control-page/group/edit/{id}/nationalFramework", func
     return new View("views/nationalFramework.html");
 });
 
+Route::setRoute("/euro_new/control-page/qualifications/fullness", function () {
+    return new View("views/fullnessOfQualifications.html");
+});
+
 Route::post("/euro_new/login/authorization", function () {
     LoginController::login(json("login"), json("password"));
 });
@@ -84,7 +91,10 @@ Route::get("/euro_new/qualifications/", function () {
 
 Route::get("/euro_new/qualifications/{id}", function ($id) {
     QualificationController::getQualification($id);
+});
 
+Route::delete("/euro_new/qualifications/{id}", function ($id) {
+    QualificationController::deleteQualification($id);
 });
 
 Route::post("/euro_new/qualifications", function () {
@@ -92,7 +102,7 @@ Route::post("/euro_new/qualifications", function () {
 });
 
 Route::put("/euro_new/qualifications/{id}", function ($id) {
-    QualificationController::updateQualification($id, json('abbreviation'), json('degree'), json('qualificationUA'), json('qualificationEN'), json('fieldOfStudyUA'), json('fieldOfStudyEN'), json('firstSpecialtyUA'), json('firstSpecialtyEN'), json('educationProgramUA'), json('educationProgramEN'), json('secondSpecialtyUA'), json('secondSpecialtyEN'), json('specializationUA'), json('specializationEN'));
+    QualificationController::updateQualification($id, json('abbreviation'), json('degree'), json('qualificationUA'), json('qualificationEN'), json('fieldStudyUA'), json('fieldStudyEN'), json('firstSpecialtyUA'), json('firstSpecialtyEN'), json('educationalProgramUA'), json('educationalProgramEN'), json('secondSpecialtyUA'), json('secondSpecialtyEN'), json('specializationUA'), json('specializationEN'));
 });
 
 //Graduates' routes
@@ -148,6 +158,7 @@ Route::put("/euro_new/estimates", function () {
 
 Route::get("/euro_new/printing/{id}/odt", function ($id) {
     PrintingController::printOdtDocument($id);
+
 });
 
 //National Framework's routes
@@ -169,3 +180,13 @@ Route::get("/euro_new/contentsAndResults/{id}", function ($id) {
 Route::put("/euro_new/contentsAndResults/{id}", function ($id) {
     ContentsAndResultsController::updateContentAndResult($id, json('formOfStudyUA'), json('formOfStudyEN'), json('programSpecificationUA'), json('programSpecificationEN'), json('knowledgeUnderstandingUA'), json('knowledgeUnderstandingEN'), json('applicationKnowledgeUnderstandingUA'), json('applicationKnowledgeUnderstandingEN'), json('makingJudgmentsUA'), json('makingJudgmentsEN'));
 });
+
+Route::get("/euro_new/users", function () {
+    UserController::getUserByToken(queryParameter("token"));
+});
+
+Route::setRoute("/euro_new/test", function () {
+    $f = new UsualClass();
+    $f -> testSomething();
+});
+

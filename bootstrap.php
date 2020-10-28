@@ -14,10 +14,13 @@ require __DIR__ . "/../vendor/autoload.php";
 
 require "route.php";
 
-
 ResponseDataReceiver::initializeJson();
 session_start();
 $router = Router::createRouter();
+\Euro\DependencyInjection\Container\DIContainer::initiateCoreContainer(\Euro\DependencyInjection\Container\ServiceInjectionContainer::class);
+
+require "container.php";
+
 //include "Json/JSON.php";
 
 if ($_SERVER['REDIRECT_STATUS'] != 200) {

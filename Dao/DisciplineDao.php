@@ -4,7 +4,7 @@
 namespace Euro\Dao;
 
 
-use Euro\DBConnector;
+use Euro\Database\DBConnector;
 use Euro\Model\Discipline;
 use Euro\Model\IncorrectObjectTypeException;
 use Euro\Model\NotFoundItemException;
@@ -44,8 +44,8 @@ class DisciplineDao extends AbstractDao implements Dao, ModelConverter
     {
         if ($object instanceof Discipline) {
             $formatString = sprintf("INSERT INTO Discipline(Discipline_ID, Qualification_ID, Course_title_UA, 
-                       Course_title_EN, Loans, Hours, Teaching, Differential, Semester, Teacher_ID) 
-                VALUES (DEFAULT, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', 0);",
+                       Course_title_EN, Loans, Hours, Teaching, Differential, Semester) 
+                VALUES (DEFAULT, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
                 $object -> getQualificationId(),
                 $object -> getCourseTitleUA(),
                 $object -> getCourseTitleEN(),

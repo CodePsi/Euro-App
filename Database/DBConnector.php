@@ -1,12 +1,12 @@
 <?php
-namespace Euro;
+namespace Euro\Database;
 
 use Euro\Response\JsonResponseBuilder;
 use Euro\Response\Response;
 use mysqli;
 use mysqli_result;
 
-class DBConnector
+class DBConnector implements Connector
 {
     public static $mysqli;
     public function __construct($host="localhost", $user="root", $password="", $database="Euro-App")
@@ -26,7 +26,7 @@ class DBConnector
      * @param $query
      * @return bool|mysqli_result
      */
-    public function execute_query($query) {
+    public function execute_query(string $query) {
         $queryResult = self::$mysqli -> query($query);
         if (self::isSqlErrorOccurred()) {
             Response::json(JsonResponseBuilder::createResponse()

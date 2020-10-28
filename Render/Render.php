@@ -1,6 +1,8 @@
 <?php
 namespace Euro\Render;
 
+use Euro\Route\Route;
+
 require __DIR__ . "/../../vendor/autoload.php";
 
 
@@ -20,6 +22,9 @@ class Render
     public static function render($resource) {
         if ($resource instanceof View) {
             readfile($resource -> getResourceName());
+        }
+        if ($resource instanceof Route) {
+
         }
         //TODO Implement interaction with controllers. Return string and call some function for it from controller.
 //        else if (is_string($resource)) {

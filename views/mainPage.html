@@ -6,6 +6,7 @@
     <script src="/euro_new/js/HttpRequest.js"></script>
     <link href="/euro_new/css/style.css" rel="stylesheet">
     <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 </head>
 <body>
 
@@ -61,8 +62,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="entry in filteredHeroes">
-                <td v-for="key in columns">
+            <tr v-for="entry in filteredHeroes" class="unselectable">
+                <td v-for="key in columns" @dblclick="editQualificationEntry(entry['порядковий номер'])">
                     {{entry[key]}}
                 </td>
                 <td style="min-width: 20px">
@@ -84,7 +85,7 @@
     <div id="app">
         <div class="main-container">
 
-            <modal v-if="showDeleteEntryModal" @close="showDeleteEntryModal = false" @execute="deleteDiscipline()">
+            <modal v-if="showDeleteEntryModal" @close="showDeleteEntryModal = false" @execute="deleteQualification()">
                 <h3 slot="header">
                     Видалення кваліфікації (ID: {{ activeModalValue }})
                 </h3>

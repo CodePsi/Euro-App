@@ -28,8 +28,8 @@ var app = new Vue({
         degree: '',
         qualificationUA: '',
         qualificationEN: '',
-        fieldOfStudyUA: '',
-        fieldOfStudyEN: '',
+        fieldStudyUA: '',
+        fieldStudyEN: '',
         firstSpecialtyUA: '',
         firstSpecialtyEN: '',
         educationProgramUA: '',
@@ -58,14 +58,15 @@ var app = new Vue({
                 app.qualificationEN = qualificationJSON.qualificationEN;
                 app.firstSpecialtyUA = qualificationJSON.firstSpecialtyUA;
                 app.firstSpecialtyEN = qualificationJSON.firstSpecialtyEN;
-                app.fieldOfStudyUA = qualificationJSON.fieldOfStudyUA;
-                app.fieldOfStudyEN = qualificationJSON.fieldOfStudyEN;
+                app.fieldStudyUA = qualificationJSON.fieldStudyUA;
+                app.fieldStudyEN = qualificationJSON.fieldStudyEN;
                 app.educationProgramUA = qualificationJSON.educationProgramUA;
                 app.educationProgramEN = qualificationJSON.educationProgramEN;
                 app.secondSpecialtyUA = qualificationJSON.secondSpecialtyUA;
                 app.secondSpecialtyEN = qualificationJSON.secondSpecialtyEN;
                 app.specializationUA = qualificationJSON.specializationUA;
                 app.specializationEN = qualificationJSON.specializationEN;
+                console.log(qualificationJSON);
             }
         };
         request.sendGETRequest("/euro_new/qualifications/" + this.qualificationId, "");
@@ -92,10 +93,11 @@ var app = new Vue({
                         showConfirmButton: false,
                         timer: 1500
                     })
+                    console.log(request.xmlHttpRequestInstance.responseText)
                 }
             };
             request.sendPUTRequest("/euro_new/qualifications/" + this.qualificationId, JSON.stringify({'abbreviation': app.abbreviation, 'degree': app.degree, 'qualificationUA': app.qualificationUA,
-            'qualificationEN': app.qualificationEN, 'fieldOfStudyUA': app.fieldOfStudyUA, 'fieldOfStudyEN': app.fieldOfStudyEN, 'firstSpecialtyUA': app.firstSpecialtyUA, 'firstSpecialtyEN': app.firstSpecialtyEN, 'educationalProgramUA': app.educationProgramUA, 'educationalProgramEN': app.educationProgramEN,
+            'qualificationEN': app.qualificationEN, 'fieldStudyUA': app.fieldStudyUA, 'fieldStudyEN': app.fieldStudyEN, 'firstSpecialtyUA': app.firstSpecialtyUA, 'firstSpecialtyEN': app.firstSpecialtyEN, 'educationalProgramUA': app.educationProgramUA, 'educationalProgramEN': app.educationProgramEN,
             'secondSpecialtyUA': app.secondSpecialtyUA, 'secondSpecialtyEN': app.secondSpecialtyEN, 'specializationUA': app.specializationUA, 'specializationEN': app.specializationEN}))
         },
         calculatePercentOfFullness: function (data) {
